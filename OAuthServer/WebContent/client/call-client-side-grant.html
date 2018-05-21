@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>OAuth Test</title>
+    <script src="jquery-1.10.2.min.js" ></script>
+    <script>
+    	$(document).ready(function(){
+    		$("#goButton").click(makeRequest);
+    	});
+    	function makeRequest(){
+    		var ENDPOINT="http://localhost:8080/oauth/public/client-side-grant.jsp";
+    		var CLIENT_ID="wmiig-550106";
+    		var REDIRECT_URI="http://localhost:8080/oauth/client/callback.html";
+    		var requestEndpoint=ENDPOINT+"?"+
+    				"client_id="+encodeURIComponent(CLIENT_ID)+"&"+
+    				"redirect_uri="+encodeURIComponent(REDIRECT_URI);
+    		window.location.href=requestEndpoint;
+    	}
+    </script>
+   </head>
+
+  <body class="bg">
+		<button id="goButton" type="button">Go!</button>
+		<div id="results"></div>
+  </body>
+</html>

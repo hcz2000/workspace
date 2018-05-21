@@ -1,0 +1,13 @@
+[DEBUG] 2016-06-18 19:15:11,299 org.sankhya.weixin.qy.util.IMUtil {"chatid":"1","op_user":"hcz13825089890""name":"群组会话""owner":"hcz13825089890""add_user_list":["hcz13825089890","cgq","User1"]}
+[INFO ] 2016-06-18 19:15:11,627 org.sankhya.weixin.qy.util.IMUtil 客服消息发送成功 errcode:0 errmsg:ok
+[DEBUG] 2016-06-18 19:15:11,628 org.sankhya.weixin.qy.util.IMUtil {"receiver":{"type": "group","id": "1"},"sender":"hcz13825089890","msgtype": "text","text":{"content": "测试信息"}}
+[INFO ] 2016-06-18 19:15:11,854 org.sankhya.weixin.qy.util.IMUtil 回话创建成功
+[DEBUG] 2016-06-18 19:17:31,146 org.sankhya.weixin.qy.util.IMUtil {"chatid":"1","op_user":"hcz13825089890""name":"群组会话""owner":"hcz13825089890""add_user_list":["hcz13825089890","cgq","User1"]}
+[INFO ] 2016-06-18 19:17:31,377 org.sankhya.weixin.qy.util.IMUtil 会话更新成功 errcode:0 errmsg:ok
+[DEBUG] 2016-06-18 19:18:55,404 org.sankhya.weixin.qy.util.IMUtil {"chatid":"1","op_user":"hcz13825089890","name":"群组会话","owner":"hcz13825089890","add_user_list":["hcz13825089890","cgq","User1"]}
+[ERROR] 2016-06-18 19:18:55,644 org.sankhya.weixin.qy.util.IMUtil 会话更新失败 errcode:86216 errmsg:invalid chat member
+[DEBUG] 2016-06-18 20:47:36,083 org.sankhya.weixin.qy.util.IMUtil {"receiver":{"type": "single","id": "cgq"},"sender":"hcz13825089890","msgtype": "text","text":{"content": "测试信息"}}
+[INFO ] 2016-06-18 20:47:36,340 org.sankhya.weixin.qy.util.IMUtil 信息发送成功
+[INFO ] 2016-06-18 21:15:12,196 org.sankhya.weixin.qy.util.IMUtil ["cgq","hcz13825089890","User1"]
+[DEBUG] 2016-06-18 21:20:29,054 org.sankhya.weixin.qy.util.IMUtil {"chatid":"1","op_user":"cgq"}
+[INFO ] 2016-06-18 21:20:29,301 org.sankhya.weixin.qy.util.IMUtil User cgq quit

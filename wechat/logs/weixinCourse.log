@@ -1,0 +1,3 @@
+[DEBUG] 2018-04-03 15:57:02,783 org.sankhya.weixin.qy.util.QYUtil {"errcode":0,"errmsg":"ok","agentid":1,"name":"Sports","square_logo_url":"http://wx.qlogo.cn/mmhead/Q3auHgzwzM77JkUriaeNlKcNkwR08E7tVVntHqJ3NuFnequYSb6icNSg/0","description":"体育报道及新闻","allow_userinfos":{"user":[]},"allow_partys":{"partyid":[1]},"close":0,"redirect_domain":"hczapp.applinzi.com","report_location_flag":0,"isreportenter":0,"home_url":""}
+[DEBUG] 2018-04-03 15:57:04,720 org.sankhya.weixin.qy.util.QYUtil {"errcode":0,"errmsg":"ok","openid":"oUuWiwyWx5Llj3iEudk9FB9fb3F4"}
+[DEBUG] 2018-04-03 15:57:04,720 org.sankhya.weixin.qy.util.QYUtil openId:oUuWiwyWx5Llj3iEudk9FB9fb3F4

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security-4.0.xsd"> 
+    
+    <!-- 静态资源配置:**代表可以多级目录 -->  
+    <!-- 
+    <http pattern="/**/*.jpg" security="none"/>  
+    <http pattern="/**/*.gif" security="none"/>  
+    <http pattern="/**/*.css" security="none"/>  
+    <http pattern="/**/*.js" security="none"/>  
+    -->
+    <!-- 登录页,不需要拦截 -->
+    <http pattern="/login/**" security="none"/>
+    <http pattern="/client/**" security="none"/>
+    
+    <http auto-config="true">  
+     <!--  
+        <access-denied-handler error-page="/login/accessDenied.html"/>
+      --> 
+        <access-denied-handler ref="accessDeniedHandler"/>
+    	  <!--拦截所有地址,除非有ROLE_USER权限-->  
+        <intercept-url pattern="/public/**" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/api/access_token" access="hasRole('ROLE_CLIENT')"/> 
+        
+        <!-- http-basic/-->
+                 
+        <!-- 登录界面 -->
+
+        <form-login login-page="/login/login.html"
+       				login-processing-url="/j_security_check"
+        			authentication-failure-url="/login/error.html"
+        			authentication-success-handler-ref="authenticationSuccessHandler"
+        			default-target-url="/hello/hello_user.jsp"  
+                    username-parameter="j_username"
+                	password-parameter="j_password"/>
+        <csrf disabled="true"/>
+    	
+        <!-- logout logout-success-url="/login/login.html"/ -->
+    </http>  
+    
+    <authentication-manager>  
+        <authentication-provider user-service-ref="userService">  
+        </authentication-provider>  
+    </authentication-manager> 
+    
+    <beans:bean id="accessDeniedHandler" class="com.jams.oauth.security.RequestAccessDeniedHandler"/> 
+    <beans:bean id="userService" class="com.jams.oauth.security.UserDetailsServiceImpl"/>
+    
+    <!-- 登录且授权成功后控制 -->  
+    <beans:bean id="authenticationSuccessHandler"   
+        class="com.jams.oauth.security.AuthenticationSuccessHandler">  
+        <beans:property name="authDispatcherMap" ref="dispatcherMap"></beans:property>  
+    </beans:bean>  
+      
+    <!-- 根据不同的权限，跳转到不同的页面（直接点击登录页面用） -->  
+    <beans:bean id="dispatcherMap" class="java.util.HashMap">  
+        <beans:constructor-arg>  
+            <beans:map>  
+                <beans:entry key="ROLE_USER" value="/hello/hello_user.jsp"/>  
+                <beans:entry key="ROLE_CLIENT" value="/hello/hello_client.jsp"/>  
+            </beans:map>  
+        </beans:constructor-arg>  
+    </beans:bean>   
+      
+</beans:beans>  

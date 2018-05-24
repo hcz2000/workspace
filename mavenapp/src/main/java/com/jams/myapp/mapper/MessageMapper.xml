@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.jams.myapp.dao.MessageDao">
+	<resultMap id="messageMap" type="com.jams.myapp.entity.Message">
+        <result column="create_time" property="createTime" />
+        <result column="password" property="password" />
+    </resultMap>  
+    <select id="findMyMessage"  parameterType="String" resultMap="messageMap">  
+        select * from t_message where receiver=#{id} 
+    </select>    
+</mapper>   

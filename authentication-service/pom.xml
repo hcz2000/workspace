@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.jams</groupId>
-  <artifactId>eurekasvr</artifactId>
+  <artifactId>authsvr</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eureka server</name>
-  <description>Eureka server</description>
+  <name>Authentication Server</name>
+  <description>Authentication Server</description>
 
   <parent>
   	<groupId>org.springframework.boot</groupId>

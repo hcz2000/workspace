@@ -5,4 +5,5 @@ logging:
     com.jams: DEBUG
 
 server:
+  port: 8901
   contextPath:   /auth

@@ -7,3 +7,4 @@ logging:
 server:
   port: 8901
   contextPath:   /auth
+

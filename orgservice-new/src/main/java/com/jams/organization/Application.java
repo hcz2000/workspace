@@ -10,7 +10,7 @@ import com.jams.organization.utils.UserContextFilter;
 import javax.servlet.Filter;
 
 @SpringBootApplication
-//@EnableEurekaClient
+@EnableEurekaClient
 @EnableResourceServer
 public class Application {
 	

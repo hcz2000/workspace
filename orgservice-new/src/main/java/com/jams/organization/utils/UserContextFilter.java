@@ -30,18 +30,18 @@ public class UserContextFilter implements Filter {
         UserContext.setAuthToken( httpServletRequest.getHeader(UserContext.AUTH_TOKEN) );
         UserContext.setOrgId( httpServletRequest.getHeader(UserContext.ORG_ID) );
         
-        /*
+        
         String authToken = UserContext.getAuthToken().replace("Bearer ","");
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey("345345fsdfsf5345".getBytes("UTF-8"))
                     .parseClaimsJws(authToken).getBody();
-           String result = (String) claims.get("organization");
-           System.out.println("****** UserContextFilter:"+result);
+           String result =(String) claims.get("client_id") +"/"+(String) claims.get("user_name")+"/"+(String) claims.get("organizationId");
+           System.out.println("****** UserContextFilter(client_id/user_name/organization):"+result);
         }
         catch (Exception e){
             e.printStackTrace();
-        }*/
+        }
 
         filterChain.doFilter(httpServletRequest, servletResponse);
     }

@@ -5,6 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>myspark</name>
   <description>my spark project</description>
+  
   <dependencies>
   	<dependency>
   		<groupId>org.apache.hadoop</groupId>

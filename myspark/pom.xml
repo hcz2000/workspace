@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.jams</groupId>
+	<artifactId>myhadoop</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>myhadoop</name>
+	<description>my hadoop project</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<hadoop.version>2.7.3</hadoop.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-hdfs</artifactId>
+			<version>${hadoop.version}</version>
+		</dependency>
+	</dependencies>
+	
+
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ssh</artifactId>
+				<version>2.8</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.jams.hadoop.WordCount</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>wagon-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<serverId>myhadoopsvr</serverId>
+					<fromDir>target</fromDir>
+					<includes>*.jar,*.properties,*.sh</includes>
+					<url>sftp://hadoop:hadoop@192.168.3.3/home/hadoop/</url>
+					<commands>
+						<command>echo "hadoop jar myhadoop-0.0.1-SNAPSHOT.jar hdfs://master:9000/user/hadoop/input/passwd /tmp/result" > /home/hadoop/run.sh</command>
+						<command>chmod 777 run.sh</command>
+						<command>/home/hadoop/run.sh</command>
+					</commands>
+					<displayCommandOutputs>true</displayCommandOutputs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

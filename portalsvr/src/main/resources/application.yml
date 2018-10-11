@@ -8,20 +8,20 @@ server:
   port: 8901
   contextPath:   /auth
 
-eureka:
-  client:
-    registerWithEureka: false
-    fetchRegistry: false
-  server:
-    waitTimeInMsWhenSyncEmpty: 5
-  serviceUrl:
-    defaultZone: http://localhost:8761
+#eureka:
+#  client:
+#    registerWithEureka: false
+#    fetchRegistry: false
+#  server:
+#    waitTimeInMsWhenSyncEmpty: 5
+#  serviceUrl:
+#    defaultZone: http://localhost:8761
     
-spring:
-  profiles:
-    active: native
-  cloud:
-     config:
-       server:
-           native:
-             searchLocations: classpath:config/,classpath:config/licensingservice,classpath:config/organizationservice,classpath:config/authenticationservice
+#spring:
+#  profiles:
+#    active: native
+#  cloud:
+#     config:
+#       server:
+#           native:
+#             searchLocations: classpath:config/,classpath:config/licensingservice,classpath:config/organizationservice,classpath:config/authenticationservice

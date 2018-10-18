@@ -21,6 +21,7 @@ spring:
     active: native
   cloud:
      config:
+       uri: http://localhost:8888     	
        server:
            native:
              searchLocations: classpath:config/,classpath:config/licensingservice,classpath:config/organizationservice,classpath:config/authenticationservice

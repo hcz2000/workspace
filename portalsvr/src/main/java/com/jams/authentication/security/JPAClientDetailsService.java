@@ -26,18 +26,22 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		if (client == null)
 			throw new ClientRegistrationException("Client not found:" + clientId);
 		else {
-			String[] scopes=client.getScope().split("|");
+			String[] scopes=client.getScope().split("\\|");
 			Set<String> scopeSet=new java.util.HashSet<String>();
 			for(String scope:scopes) {
 				scopeSet.add(scope);
 			}
 
-			String[] grantTypes=client.getGrantTypes().split("|");
+			String[] grantTypes=client.getGrantTypes().split("\\|");
 			Set<String> grantTypeSet=new java.util.HashSet<String>();
+			Collection<GrantedAuthority> authorityList=new java.util.ArrayList<GrantedAuthority>();
 			for(String type:grantTypes) {
 				grantTypeSet.add(type);
+				SimpleAuthority authority=new SimpleAuthority(type);
+				authorityList.add(authority);
 			}
-			SimpleClientDetails clientDetails=new SimpleClientDetails(client.getId(),client.getSecret(),scopeSet,grantTypeSet);
+			
+			SimpleClientDetails clientDetails=new SimpleClientDetails(client.getId(),client.getSecret(),scopeSet,grantTypeSet,authorityList);
 			
 			return clientDetails;
 		}
@@ -48,13 +52,15 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		private String clientSecret;
 		private Set<String> scope;
 		private Set<String> grantTypes;
+		private Collection<GrantedAuthority> authorities;
 		
-		public SimpleClientDetails(String clientId, String clientSecret, Set<String>scope, Set<String>grantTypes) {
+		public SimpleClientDetails(String clientId, String clientSecret, Set<String>scope, Set<String>grantTypes,Collection<GrantedAuthority>authorities) {
 			super();
 			this.clientId = clientId;
 			this.clientSecret = clientSecret;
 			this.scope = scope;
 			this.grantTypes=grantTypes;
+			this.authorities=authorities;
 		}
 
 		@Override
@@ -100,8 +106,7 @@ public class JPAClientDetailsService implements ClientDetailsService {
 
 		@Override
 		public Collection<GrantedAuthority> getAuthorities() {
-			// TODO Auto-generated method stub
-			return null;
+			return authorities;
 		}
 
 		@Override
@@ -125,5 +130,13 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		}
 	}
 
-
+	class SimpleAuthority implements GrantedAuthority {
+		private String authority;
+		public SimpleAuthority(String authority) {
+			this.authority=authority;
+		}
+		public String getAuthority() {
+			return authority;
+		};
+	}
 }

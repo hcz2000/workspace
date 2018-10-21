@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,8 +40,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	@Bean
 	@Primary
 	public UserDetailsService userDetailsServiceBean() throws Exception {
-		return super.userDetailsServiceBean();//inMemoryAuthentication or jdbcAuthentication case
-		//return userDetailService;//UserDetailsServie case
+		return super.userDetailsServiceBean();
 	}
 
 	@Override
@@ -48,11 +49,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 		/*auth.inMemoryAuthentication().withUser("john.carnell").password("password1").roles("USER").and()
 				.withUser("william.woodward").password("password2").roles("USER", "ADMIN");*/
 		
-		//*jdbcAuthentication case
+		//*jdbcAuthentication case"
 		/*auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select user_name,password,enabled from users where user_name= ?")
 			.authoritiesByUsernameQuery("select user_name,role from user_roles where user_name= ?").passwordEncoder(new BCryptPasswordEncoder());*/
 		
 		//UserDetailsServie case
 		auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
 	}
+
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.
+	     	authorizeRequests()
+	     		.antMatchers("/authenticationservice/**").permitAll()
+	     		.anyRequest().authenticated();
+	}
+	
 }

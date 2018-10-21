@@ -30,13 +30,10 @@ public class JWTOAuth2Config extends AuthorizationServerConfigurerAdapter {
     
     //ClientDetailsService case
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private JPAClientDetailsService clientDetailsService;
 
     @Autowired
     private TokenStore tokenStore;
-
-    @Autowired
-    private DefaultTokenServices tokenServices;
 
     @Autowired
     private JwtAccessTokenConverter jwtAccessTokenConverter;

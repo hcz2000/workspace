@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 @EnableResourceServer
 @EnableAuthorizationServer
-@EnableConfigServer
+//@EnableConfigServer
 public class AuthenticationServer {
 	public static void main(String[] args) {
 		SpringApplication.run(AuthenticationServer.class,args);

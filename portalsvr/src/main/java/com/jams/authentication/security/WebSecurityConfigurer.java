@@ -66,7 +66,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 	        .and()
 	        .authorizeRequests().antMatchers("/oauth/**").authenticated()
 	        .and()
-	        .formLogin().permitAll();
+	        //.formLogin().permitAll();
+	        .httpBasic();
 	}
 	
 }

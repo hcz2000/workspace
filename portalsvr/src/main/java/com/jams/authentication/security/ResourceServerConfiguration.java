@@ -13,8 +13,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		http.authorizeRequests()
 				.antMatchers("/authenticationservice/**","/info/public").anonymous()
 				.anyRequest().authenticated()
-				.and()
-			.requestMatchers().antMatchers("/*service/**","/info/**");
+			.and()
+			.requestMatchers().antMatchers("/*service/**","/info/**")
+			.and()
+			.httpBasic();
 		}
 	
 

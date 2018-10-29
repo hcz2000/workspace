@@ -20,7 +20,14 @@ public class Client {
 
 	@Column(name = "authorized_grant_types")
 	private String grantTypes;
+	
+	@Column(name = "access_token_validity")
+	private int accessTokenValiditySeconds;
+	
+	@Column(name = "refresh_token_validity")
+	private int refreshTokenValiditySeconds;
 
+	
 	public String getId() {
 		return id;
 	}
@@ -53,7 +60,20 @@ public class Client {
 		this.grantTypes = grantTypes;
 	}
 
-	
+	public int getAccessTokenValiditySeconds() {
+		return accessTokenValiditySeconds;
+	}
 
+	public void setAccessTokenValiditySeconds(int accessTokenValiditySeconds) {
+		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+	}
+
+	public int getRefreshTokenValiditySeconds() {
+		return refreshTokenValiditySeconds;
+	}
+
+	public void setRefreshTokenValiditySeconds(int refreshTokenValiditySeconds) {
+		this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
+	}
 
 }

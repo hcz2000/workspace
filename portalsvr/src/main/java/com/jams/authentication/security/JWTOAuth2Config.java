@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class JWTOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
+	@Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -76,4 +77,12 @@ public class JWTOAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .authorizedGrantTypes("refresh_token", "password", "client_credentials")
                 .scopes("webclient", "mobileclient");*/
     }
+    
+
+    @Override
+	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+		security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+	}
+
+
 }

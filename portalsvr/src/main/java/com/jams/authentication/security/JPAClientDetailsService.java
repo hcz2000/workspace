@@ -41,7 +41,7 @@ public class JPAClientDetailsService implements ClientDetailsService {
 				authorityList.add(authority);
 			}
 			
-			SimpleClientDetails clientDetails=new SimpleClientDetails(client.getId(),client.getSecret(),scopeSet,grantTypeSet,authorityList);
+			SimpleClientDetails clientDetails=new SimpleClientDetails(client.getId(),client.getSecret(),scopeSet,grantTypeSet,authorityList,client.getAccessTokenValiditySeconds(),client.getRefreshTokenValiditySeconds());
 			
 			return clientDetails;
 		}
@@ -53,14 +53,18 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		private Set<String> scope;
 		private Set<String> grantTypes;
 		private Collection<GrantedAuthority> authorities;
+		private int accessTokenValiditySeconds;
+		private int refreshTokenValiditySeconds;
 		
-		public SimpleClientDetails(String clientId, String clientSecret, Set<String>scope, Set<String>grantTypes,Collection<GrantedAuthority>authorities) {
+		public SimpleClientDetails(String clientId, String clientSecret, Set<String>scope, Set<String>grantTypes,Collection<GrantedAuthority>authorities,int accessTokenValiditySeconds,int refreshTokenValiditySeconds) {
 			super();
 			this.clientId = clientId;
 			this.clientSecret = clientSecret;
 			this.scope = scope;
 			this.grantTypes=grantTypes;
 			this.authorities=authorities;
+			this.accessTokenValiditySeconds=accessTokenValiditySeconds;
+			this.refreshTokenValiditySeconds=refreshTokenValiditySeconds;
 		}
 
 		@Override
@@ -111,17 +115,17 @@ public class JPAClientDetailsService implements ClientDetailsService {
 
 		@Override
 		public Integer getAccessTokenValiditySeconds() {
-			return 3600;
+			return accessTokenValiditySeconds;
 		}
 
 		@Override
 		public Integer getRefreshTokenValiditySeconds() {
-			return 3600;
+			return refreshTokenValiditySeconds;
 		}
 
 		@Override
 		public boolean isAutoApprove(String scope) {
-			return true;
+			return false;
 		}
 
 		@Override

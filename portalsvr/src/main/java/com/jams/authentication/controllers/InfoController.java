@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +15,11 @@ public class InfoController {
     }
     
     @RequestMapping("/config")
-    public String  configInfo() {
-        return "Config Info";
+    public Map<String,String>  configInfo() {
+    	Map<String,String> config=new HashMap<String,String>();
+    	config.put("spring.datasource.url", "jdbc:mysql://localhost:3306/test");
+    	config.put("spring.datasource.username", "root");
+    	config.put("spring.datasource.password", "");
+        return config;
     }
 }

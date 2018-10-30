@@ -26,24 +26,18 @@ public class FetchInfo {
 
 	@RequestMapping("/fetch")
 	@ResponseBody
-	public String fetchInfo(@RequestParam(value = "userName") String userName, HttpSession httpSession,RedirectAttributes redirectAttrs) {
+	public String fetchInfo(HttpSession httpSession,RedirectAttributes redirectAttrs) {
 
 		final String ENDPOINT = "http://localhost:8888/info/config";
-		/*
-		final String CLIENT_ID = "eagleeye";
-		final String CLIENT_SECRET = "thisissecret";
-		*/
 
 		String response = null;
 		try {
-			HttpPost httpPost;
-			httpPost = new HttpPost(ENDPOINT + "?userName=" + URLEncoder.encode(userName, StandardCharsets.UTF_8.name()));
-			/* for client authentication enhance
-			String clientCredentials = CLIENT_ID + ":" + CLIENT_SECRET;
-			String encodedClientCredentials = new String(Base64.encodeBase64(clientCredentials.getBytes()));
-			httpPost.setHeader("Authorization", "Basic " + encodedClientCredentials);
-			*/
 			AccessToken token=(AccessToken)httpSession.getAttribute("accessToken");
+			if(token==null) {
+				token=OauthTokenTool.getAccessToken("john.carnell", "password1");
+			}
+			HttpPost httpPost;
+			httpPost = new HttpPost(ENDPOINT);
 			httpPost.addHeader("Authorization", "Bearer " + token.getAccess_token());
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			HttpResponse httpResponse = httpClient.execute(httpPost);

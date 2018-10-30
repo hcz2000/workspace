@@ -28,10 +28,10 @@ public class FetchInfo {
 	@ResponseBody
 	public String fetchInfo(@RequestParam(value = "userName") String userName, HttpSession httpSession,RedirectAttributes redirectAttrs) {
 
-		final String ENDPOINT = "http://localhost:8080/oauth/infosvr/fetch_info";
+		final String ENDPOINT = "http://localhost:8888/info/config";
 		/*
-		final String CLIENT_ID = "client-0001";
-		final String CLIENT_SECRET = "testpass";
+		final String CLIENT_ID = "eagleeye";
+		final String CLIENT_SECRET = "thisissecret";
 		*/
 
 		String response = null;
@@ -55,6 +55,6 @@ public class FetchInfo {
 			System.out.println("Exception Occured!");
 			e.printStackTrace();
 		}
-		return "Response From Oauth Server:"+response;
+		return "Response From Resource Server:"+response;
 	}
 }

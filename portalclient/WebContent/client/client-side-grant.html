@@ -8,11 +8,13 @@
     		$("#goButton").click(makeRequest);
     	});
     	function makeRequest(){
-    		var ENDPOINT="http://localhost:8080/oauth/public/client-side-grant.jsp";
-    		var CLIENT_ID="wmiig-550106";
+    		var ENDPOINT="http://localhost:8888/oauth/authorize";
+    		var CLIENT_ID="eagleeye";
+    		var RESPONSE_TYPE="token";
     		var REDIRECT_URI="http://localhost:8080/OAuthClient/client/callback.html";
     		var requestEndpoint=ENDPOINT+"?"+
     				"client_id="+encodeURIComponent(CLIENT_ID)+"&"+
+    				"response_type="+encodeURIComponent(RESPONSE_TYPE)+"&"+
     				"redirect_uri="+encodeURIComponent(REDIRECT_URI);
     		window.location.href=requestEndpoint;
     	}

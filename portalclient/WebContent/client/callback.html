@@ -8,15 +8,12 @@
 
     <script>
      	$(document).ready(function() {
-     		var fragments=location.href.split("?")
+     		var fragments=location.href.split("#");
 			if(fragments.length>1){
-				var properties=fragments[1].split("&");
-				for(var i=0;i<properties.length;i++){
-					if(properties[i].indexOf("access_token")==0){
-						$("#response").html(properties[i]);
-						break;
-	    			}
-				}
+				if(fragments[1].indexOf("access_token")==0){
+					$("#response").html(fragments[1]);
+	    		}
+				
 			}else
 				$("#response").html("No response detected.");
     	});

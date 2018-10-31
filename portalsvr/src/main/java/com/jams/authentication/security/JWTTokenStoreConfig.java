@@ -36,22 +36,10 @@ public class JWTTokenStoreConfig {
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
 		JwtAccessTokenConverter converter=new JwtAccessTokenConverter();
-		/*
+		//converter.setSigningKey(serviceConfig.getJwtSigningKey());
 	    KeyStoreKeyFactory keyStoreKeyFactory =new KeyStoreKeyFactory(new ClassPathResource("config/mystore.jks"), "mypass".toCharArray());
         converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mykey"));
-        
-        Resource resource = new ClassPathResource("config/publickey.txt");
-        String publicKey = null;
-        try {
-                publicKey = inputStream2String(resource.getInputStream());
-        } catch (final IOException e) {
-                throw new RuntimeException(e);
-        }
-        converter.setVerifierKey(publicKey);
-
-		*/
-		converter.setSigningKey(serviceConfig.getJwtSigningKey());
-		return converter;
+ 		return converter;
 	}
 	
 	@Bean

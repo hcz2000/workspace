@@ -11,10 +11,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/authenticationservice/**","/info/public").permitAll()
+				.antMatchers("/info/public").permitAll()
 				.anyRequest().authenticated()
 			.and()
-			.requestMatchers().antMatchers("/*service/**","/info/**")
+			.requestMatchers().antMatchers("/info/**")
 			.and()
 			.httpBasic();
 		}

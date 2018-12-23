@@ -25,7 +25,7 @@ public class WordCount {
           
         JavaSparkContext sc = new JavaSparkContext(conf);  
           
-        JavaRDD<String> lines = sc.textFile("/etc/password");  
+        JavaRDD<String> lines = sc.textFile("/home/spark/run.sh");  
 
         JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {  
 

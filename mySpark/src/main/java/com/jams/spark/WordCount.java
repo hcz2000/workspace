@@ -25,15 +25,16 @@ public class WordCount {
           
         JavaSparkContext sc = new JavaSparkContext(conf);  
           
-        JavaRDD<String> lines = sc.textFile("/home/spark/run.sh");  
-
+        JavaRDD<String> lines = sc.textFile("/home/spark/run.sh");
+        
+/*
         JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {  
 
             public Iterator<String> call(String line) throws Exception { //  
                 return Arrays.asList(line.split(" ")).iterator();  
             }  
         });  
-          
+         
         JavaPairRDD<String,Integer> pairs = words.mapToPair(new PairFunction<String, String, Integer>() {  
             public Tuple2<String, Integer> call(String word) throws Exception {  
                 return new Tuple2<String,Integer>(word,1) ;  
@@ -51,8 +52,13 @@ public class WordCount {
             public void call(Tuple2<String, Integer> pairs) throws Exception {  
                 System.out.println(pairs._1 + ":" + pairs._2);  
             }  
-        });   
-       sc.close();  
+        });
+*/   
+        JavaRDD<String> words = lines.flatMap(line->Arrays.asList(line.split(" ")).iterator());
+        JavaPairRDD<String,Integer> pairs = words.mapToPair(word->new Tuple2<String,Integer>(word,1));
+        JavaPairRDD<String,Integer> wordsCount = pairs.reduceByKey((v1,v2)->v1+v2);
+        wordsCount.foreach(tuple->System.out.println(tuple._1+":"+tuple._2));
+        sc.close();  
     }  
 }  
  

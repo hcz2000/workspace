@@ -37,7 +37,7 @@ public class JPAUserDetailsService implements UserDetailsService {
 			for (UserRole role : roles) {
 				authorities.add(new SimpleGrantedAuthority(role.getRole()));
 			}
-			return new SimpleUserDetails(user.getName(), user.getPassword(),user.getEnabled()==0?false:true , authorities);
+			return new SimpleUserDetails(user.getName(), user.getPassword(),user.getEnabled() , authorities);
 		}
 	}
 

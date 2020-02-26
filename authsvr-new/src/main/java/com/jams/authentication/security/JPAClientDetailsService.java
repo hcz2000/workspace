@@ -26,22 +26,42 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		if (client == null)
 			throw new ClientRegistrationException("Client not found:" + clientId);
 		else {
-			String[] scopes=client.getScope().split("\\|");
+
 			Set<String> scopeSet=new java.util.HashSet<String>();
-			for(String scope:scopes) {
-				scopeSet.add(scope);
+			if(client.getScope()!=null) {
+				String[] scopes=client.getScope().split("\\|");
+				for(String scope:scopes) {
+					scopeSet.add(scope);
+				}
 			}
 
-			String[] grantTypes=client.getGrantTypes().split("\\|");
 			Set<String> grantTypeSet=new java.util.HashSet<String>();
 			Collection<GrantedAuthority> authorityList=new java.util.ArrayList<GrantedAuthority>();
-			for(String type:grantTypes) {
-				grantTypeSet.add(type);
-				SimpleAuthority authority=new SimpleAuthority(type);
-				authorityList.add(authority);
+			if(client.getGrantTypes()!=null) {
+				String[] grantTypes=client.getGrantTypes().split("\\|");
+				for(String type:grantTypes) {
+					grantTypeSet.add(type);
+					SimpleAuthority authority=new SimpleAuthority(type);
+					authorityList.add(authority);
+				}
 			}
 			
-			SimpleClientDetails clientDetails=new SimpleClientDetails(client.getId(),client.getSecret(),scopeSet,grantTypeSet,authorityList);
+			Set<String> uriSet = new java.util.HashSet<String>();
+			if(client.getRedirectUri()!=null) {
+				String[] uris = client.getRedirectUri().split("\\|");
+				for (String uri : uris) {
+					uriSet.add(uri);
+				}
+			}
+			
+			boolean autoApprove=false;
+			if("true".equalsIgnoreCase(client.getAutoApprove())) {
+				autoApprove=true;
+			}
+			
+			SimpleClientDetails clientDetails = new SimpleClientDetails(client.getId(), client.getSecret(), scopeSet,
+					grantTypeSet, authorityList,client.getAccessTokenValidity(),client.getRefreshTokenValidity(),
+					uriSet,client.getAdditionalInformation(),autoApprove);
 			
 			return clientDetails;
 		}
@@ -53,19 +73,32 @@ public class JPAClientDetailsService implements ClientDetailsService {
 		private Set<String> scope;
 		private Set<String> grantTypes;
 		private Collection<GrantedAuthority> authorities;
-		
-		public SimpleClientDetails(String clientId, String clientSecret, Set<String>scope, Set<String>grantTypes,Collection<GrantedAuthority>authorities) {
+		private int accessTokenValidity;
+		private int refreshTokenValidity;
+		private Set<String> redirectUri;
+		private String additionalInformation;
+		private boolean isAutoApprove;
+
+		public SimpleClientDetails(String clientId, String clientSecret, Set<String> scope, Set<String> grantTypes,
+				Collection<GrantedAuthority> authorities,int accessTokenValidity,int refreshTokenValidity,
+				Set<String> redirectUri,String additionalInformation,boolean autoApprove) {
+
 			super();
 			this.clientId = clientId;
 			this.clientSecret = clientSecret;
 			this.scope = scope;
-			this.grantTypes=grantTypes;
-			this.authorities=authorities;
+			this.grantTypes = grantTypes;
+			this.authorities = authorities;
+			this.accessTokenValidity=accessTokenValidity;
+			this.refreshTokenValidity=refreshTokenValidity;
+			this.redirectUri=redirectUri;
+			this.additionalInformation=additionalInformation;
+			this.isAutoApprove=autoApprove;
 		}
 
 		@Override
 		public String getClientId() {
-			return clientId;
+			return this.clientId;
 		}
 
 		@Override
@@ -80,7 +113,7 @@ public class JPAClientDetailsService implements ClientDetailsService {
 
 		@Override
 		public String getClientSecret() {
-			return clientSecret;
+			return this.clientSecret;
 		}
 
 		@Override
@@ -90,44 +123,44 @@ public class JPAClientDetailsService implements ClientDetailsService {
 
 		@Override
 		public Set<String> getScope() {
-			return scope;
+			return this.scope;
 		}
 
 		@Override
 		public Set<String> getAuthorizedGrantTypes() {
-			return grantTypes;
+			return this.grantTypes;
 		}
 
 		@Override
 		public Set<String> getRegisteredRedirectUri() {
-			// TODO Auto-generated method stub
-			return null;
+			return this.redirectUri;
 		}
 
 		@Override
 		public Collection<GrantedAuthority> getAuthorities() {
-			return authorities;
+			return this.authorities;
 		}
 
 		@Override
 		public Integer getAccessTokenValiditySeconds() {
-			return 3600;
+			return this.accessTokenValidity;
 		}
 
 		@Override
 		public Integer getRefreshTokenValiditySeconds() {
-			return 3600;
+			return this.refreshTokenValidity;
 		}
 
 		@Override
 		public boolean isAutoApprove(String scope) {
-			return true;
+			return this.isAutoApprove;
 		}
 
 		@Override
 		public Map<String, Object> getAdditionalInformation() {
 			return null;
 		}
+
 	}
 
 	class SimpleAuthority implements GrantedAuthority {

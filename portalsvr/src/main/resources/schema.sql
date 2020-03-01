@@ -28,11 +28,11 @@ CREATE TABLE clients (
   authorized_grant_types varchar(256) DEFAULT NULL,
   web_server_redirect_uri varchar(256) DEFAULT NULL,
   authorities varchar(256) DEFAULT NULL,
-  access_token_validity int(11) DEFAULT NULL,
-  refresh_token_validity int(11) DEFAULT NULL,
+  access_token_validity integer DEFAULT NULL,
+  refresh_token_validity integer DEFAULT NULL,
   additional_information varchar(4096) DEFAULT NULL,
   autoapprove varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`client_id`)
+  PRIMARY KEY (client_id)
 );
 
 INSERT INTO users(user_name,password,enabled) VALUES ('john.carnell','$2a$04$NX3QTkBJB00upxKeaKqFBeoIVc9JHvwVnj1lItxNphRj34wNx5wlu', true);
@@ -45,4 +45,4 @@ INSERT INTO user_roles (user_name, role) VALUES ('william.woodward', 'ROLE_USER'
 INSERT INTO user_orgs (organization_id, user_name) VALUES ('d1859f1f-4bd7-4593-8654-ea6d9a6a626e', 'john.carnell');
 INSERT INTO user_orgs (organization_id, user_name) VALUES ('42d3d4f5-9f33-42f4-8aca-b7519d6af1bb', 'william.woodward');
 
-INSERT INTO clients VALUES ('eagleeye', null, 'thisissecret', 'webclient|mobileclient', 'refresh_token|password|client_credentials|authorization_code|implicit', null, null, 2592000, 2592000, null, null);
+INSERT INTO clients VALUES ('eagleeye', null, 'thisissecret', 'webclient|mobileclient', 'authorization_code|refresh_token|password|client_credentials|implicit', null, null, 3600, 3600, '{"country":"CN","country_code":"086"}', 'true');

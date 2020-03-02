@@ -21,13 +21,21 @@ public class Client {
 	@Column(name = "authorized_grant_types")
 	private String grantTypes;
 	
-	@Column(name = "access_token_validity")
-	private int accessTokenValiditySeconds;
+	@Column(name = "access_token_validity")	
+	private int accessTokenValidity;
 	
-	@Column(name = "refresh_token_validity")
-	private int refreshTokenValiditySeconds;
+	@Column(name = "refresh_token_validity")	
+	private int refreshTokenValidity;
+	
+	@Column(name = "web_server_redirect_uri")	
+	private String redirectUri;
+	
+	@Column(name = "additional_information")	
+	private String additionalInformation;
+	
+	@Column(name = "autoapprove")
+	private String autoApprove;
 
-	
 	public String getId() {
 		return id;
 	}
@@ -60,20 +68,45 @@ public class Client {
 		this.grantTypes = grantTypes;
 	}
 
-	public int getAccessTokenValiditySeconds() {
-		return accessTokenValiditySeconds;
+
+	public int getAccessTokenValidity() {
+		return accessTokenValidity;
 	}
 
-	public void setAccessTokenValiditySeconds(int accessTokenValiditySeconds) {
-		this.accessTokenValiditySeconds = accessTokenValiditySeconds;
+	public void setAccessTokenValidity(int accessTokenValidity) {
+		this.accessTokenValidity = accessTokenValidity;
 	}
 
-	public int getRefreshTokenValiditySeconds() {
-		return refreshTokenValiditySeconds;
+	public int getRefreshTokenValidity() {
+		return refreshTokenValidity;
 	}
 
-	public void setRefreshTokenValiditySeconds(int refreshTokenValiditySeconds) {
-		this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
+	public void setRefreshTokenValidity(int refreshTokenValidity) {
+		this.refreshTokenValidity = refreshTokenValidity;
+	}
+
+	public String getRedirectUri() {
+		return redirectUri;
+	}
+
+	public void setRedirectUri(String redirectUri) {
+		this.redirectUri = redirectUri;
+	}
+
+	public String getAdditionalInformation() {
+		return additionalInformation;
+	}
+
+	public void setAdditionalInformation(String additionalInformation) {
+		this.additionalInformation = additionalInformation;
+	}
+
+	public String getAutoApprove() {
+		return autoApprove;
+	}
+
+	public void setAutoApprove(String autoApprove) {
+		this.autoApprove = autoApprove;
 	}
 
 }

@@ -10,7 +10,7 @@
 	<description>my hadoop project</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<hadoop.version>2.7.3</hadoop.version>
+		<hadoop.version>3.2.3</hadoop.version>
 	</properties>
 
 	<dependencies>

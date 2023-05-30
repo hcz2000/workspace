@@ -20,9 +20,9 @@ public class WordCount {
   
     public static void main(String[] args) {  
           
-        SparkConf conf = new SparkConf()  
-                .setAppName("Spark WordCount by Java.").setMaster("local");  
-          
+        //SparkConf conf = new SparkConf().setAppName("Spark WordCount by Java.").setMaster("local");  
+    	SparkConf conf = new SparkConf().setAppName("Spark WordCount by Java."); 
+    	
         JavaSparkContext sc = new JavaSparkContext(conf);  
           
         //JavaRDD<String> lines = sc.textFile("hdfs://192.168.3.3:9000/user/hadoop/input/01.txt");

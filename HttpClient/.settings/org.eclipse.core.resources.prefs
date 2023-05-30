@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+encoding//src/com/zhan/myreader/greendao/entity/Book.java=UTF-8
+encoding//src/com/zhan/myreader/greendao/entity/Chapter.java=UTF-8
+encoding//src/com/zhan/myreader/util/HttpUtil.java=UTF-8
+encoding//src/com/zhan/myreader/util/RSACoder.java=UTF-8
+encoding//src/com/zhan/myreader/util/crawler/BiQuGeReadUtil.java=UTF-8
+encoding//src/com/zhan/myreader/util/crawler/TianLaiReadUtil.java=UTF-8
+encoding//src/com/zhan/myreader/webapi/BookStoreApi.java=UTF-8

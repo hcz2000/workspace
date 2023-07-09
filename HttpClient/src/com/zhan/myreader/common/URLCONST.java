@@ -10,5 +10,6 @@ public class URLCONST {
  //public static String nameSpace_system = "https://10.10.123.31:8080/jeecg";
     public static boolean isRSA = false;
     public static String method_buxiu_search = "https://m.23sk.net/search.php";
+    public static String bookprefix_tianlai = "https://m.23sk.net/files/article/html";
 }
 

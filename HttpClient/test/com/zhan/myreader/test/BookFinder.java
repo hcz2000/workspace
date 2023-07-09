@@ -58,7 +58,8 @@ public class BookFinder {
 	public static void main(String[] args) {
 		
 		BookFinder bookFinder=new BookFinder();
-		List<Book> books=bookFinder.getBooks("æˆ‘çš„1991");
+		//List<Book> books=bookFinder.getBooks("Èý´çÈË¼ä");
+		List<Book> books=bookFinder.getBooks("121057");
 		if(books!=null) {
 				for(Book book: books) {
 					System.out.println(book.getName());

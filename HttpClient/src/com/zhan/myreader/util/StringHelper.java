@@ -7,12 +7,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by zhao on 2016/9/9.
+ * Created by zhan on 2016/9/9.
  */
 public class StringHelper {
 
     /**
-     * æ˜¯å¦æ˜¯Emojiè¡¨æƒ…ç¬¦
+     * ÊÇ·ñÊÇEmoji±íÇé·û
      * @param string
      * @return
      */
@@ -24,7 +24,7 @@ public class StringHelper {
     }
 
     /**
-     * å­—ç¬¦é›†ç¼–ç 
+     * ×Ö·û¼¯±àÂë
      * @param encoded
      * @return
      */
@@ -39,7 +39,7 @@ public class StringHelper {
     }
 
     /**
-     * å­—ç¬¦é›†ç¼–ç 
+     * ×Ö·û¼¯±àÂë
      * @param encoded
      * @return
      */
@@ -54,7 +54,7 @@ public class StringHelper {
     }
 
     /**
-     * å­—ç¬¦é›†è§£ç 
+     * ×Ö·û¼¯½âÂë
      * @param decoded
      * @return
      */
@@ -70,7 +70,7 @@ public class StringHelper {
     }
 
     /**
-     * å­—ç¬¦é›†è§£ç 
+     * ×Ö·û¼¯½âÂë
      * @param decoded
      * @return
      */
@@ -85,18 +85,18 @@ public class StringHelper {
         return res;
     }
 
-    //ç”Ÿæˆéšæœºæ•°å­—å’Œå­—æ¯,
+    //Éú³ÉËæ»úÊı×ÖºÍ×ÖÄ¸,
     public static String getStringRandom(int length) {
 
         String val = "";
         Random random = new Random();
 
-        //å‚æ•°lengthï¼Œè¡¨ç¤ºç”Ÿæˆå‡ ä½éšæœºæ•°
+        //²ÎÊılength£¬±íÊ¾Éú³É¼¸Î»Ëæ»úÊı
         for(int i = 0; i < length; i++) {
             String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num";
-            //è¾“å‡ºå­—æ¯è¿˜æ˜¯æ•°å­—
+            //Êä³ö×ÖÄ¸»¹ÊÇÊı×Ö
             if( "char".equalsIgnoreCase(charOrNum) ) {
-                //è¾“å‡ºæ˜¯å¤§å†™å­—æ¯è¿˜æ˜¯å°å†™å­—æ¯
+                //Êä³öÊÇ´óĞ´×ÖÄ¸»¹ÊÇĞ¡Ğ´×ÖÄ¸
                 int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;
                 val += (char)(random.nextInt(26) + temp);
             } else if( "num".equalsIgnoreCase(charOrNum) ) {
@@ -130,7 +130,7 @@ public class StringHelper {
     }
 
     /**
-     * ç¼©å‡å­—ç¬¦ä¸²
+     * Ëõ¼õ×Ö·û´®
      * @param strlocation
      * @param maxLength
      * @return
@@ -150,7 +150,7 @@ public class StringHelper {
     }
 
     /**
-     * ä¸¤å­—ç¬¦ä¸²æ˜¯å¦ç›¸ç­‰æˆ–è€…éƒ½ä¸ºç©º
+     * Á½×Ö·û´®ÊÇ·ñÏàµÈ»òÕß¶¼Îª¿Õ
      * @param str1
      * @param str2
      * @return
@@ -167,7 +167,13 @@ public class StringHelper {
         else return text;
     }
 
-
-
+    public static boolean isNumeric(String text){
+        Pattern pattern=Pattern.compile("[0-9]+");
+        Matcher isNum=pattern.matcher(text);
+        if(isNum.matches()){
+            return true;
+        }
+        return false;
+    }
 
 }

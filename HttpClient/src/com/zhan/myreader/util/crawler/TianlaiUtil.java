@@ -256,7 +256,6 @@ public class TianlaiUtil {
 			Element imgDiv = element.child(0);
 			book.setImgUrl(imgDiv.child(0).attr("src"));
 			Element txtDiv = element.child(1);
-			//System.out.println(txtDiv);
 			book.setName(txtDiv.child(1).child(0).text());
 			book.setChapterUrl(URLCONST.nameSpace_tianlai + txtDiv.child(1).child(0).attr("href"));
 			book.setAuthor(txtDiv.child(3).text());

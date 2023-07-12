@@ -5,7 +5,7 @@ package com.zhan.myreader.greendao.entity;
 import java.io.Serializable;
 
 /**
- * 涔�
+ *
  * Created by zhao on 2017/7/24.
  */
 

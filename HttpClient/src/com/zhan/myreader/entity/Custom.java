@@ -3,7 +3,7 @@ package com.zhan.myreader.entity;
 import java.io.Serializable;
 
 /**
- * Created by zhao on 2016/11/2.
+ * Created by zhan on 2016/11/2.
  */
 
 public class Custom implements Serializable {
@@ -11,7 +11,7 @@ public class Custom implements Serializable {
     private static final long serialVersionUID = 5088810102696918656L;
 
     private String id;
-    private String type;//类型
+    private String type;
 
     public String getId() {
         return id;

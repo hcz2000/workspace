@@ -2,7 +2,7 @@ package com.zhan.myreader.callback;
 
 
 /**
- * Created by zhao on 2016/10/25.
+ * Created by zhan on 2016/10/25.
  */
 
 public interface ResultCallback {

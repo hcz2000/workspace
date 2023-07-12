@@ -3,7 +3,6 @@ package com.zhan.myreader.greendao.entity;
 
 
 /**
- * 绔犺妭
  * Created by zhao on 2017/7/24.
  */
 

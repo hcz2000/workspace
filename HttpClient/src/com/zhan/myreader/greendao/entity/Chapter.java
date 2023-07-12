@@ -12,11 +12,11 @@ public class Chapter {
 
     private String id;
 
-    private String bookId;//绔犺妭鎵�灞炰功鐨処D
-    private int number;//绔犺妭搴忓彿
-    private String title;//绔犺妭鏍囬
-    private String url;//绔犺妭閾炬帴
-    private String content;//绔犺妭姝ｆ枃
+    private String bookId;
+    private int number;
+    private String title;
+    private String url;
+    private String content;
 
 
     public Chapter(String id, String bookId, int number, String title, String url,

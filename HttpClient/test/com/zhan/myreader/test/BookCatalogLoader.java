@@ -9,10 +9,10 @@ import com.zhan.myreader.greendao.entity.Chapter;
 import com.zhan.myreader.util.StringHelper;
 import com.zhan.myreader.webapi.BookApi;
 
-public class BookFinder2 {
+public class BookCatalogLoader {
 	private CountDownLatch countDownLatch;
 	
-	public BookFinder2() {
+	public BookCatalogLoader() {
 		countDownLatch= new CountDownLatch(1);
 	}
 	
@@ -57,7 +57,7 @@ public class BookFinder2 {
 
 	public static void main(String[] args) {
 		
-		BookFinder2 bookFinder=new BookFinder2();
+		BookCatalogLoader bookFinder=new BookCatalogLoader();
 		//List<Book> books=bookFinder.getBooks("我的1991");
 		List<Book> books=bookFinder.getBooks("121057");
 		if(books!=null) {

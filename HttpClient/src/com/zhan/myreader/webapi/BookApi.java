@@ -78,7 +78,7 @@ public class BookApi {
 			}
 		});
 	}
-
+	
 	public static List<Chapter> getBookChapters(Book book) {
 		List<Chapter> list = new ArrayList<Chapter>();
 		String[] urls = book.getChapterUrl().split("\\|");

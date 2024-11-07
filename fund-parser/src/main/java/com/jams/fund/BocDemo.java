@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
-public class Demo{
+public class BocDemo{
 
 	public static void main(String[] args) {
 		FirefoxOptions opts=new FirefoxOptions();

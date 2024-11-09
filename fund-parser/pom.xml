@@ -22,17 +22,30 @@
   		<artifactId>httpclient</artifactId>
   		<version>4.5.10</version>
   	</dependency>
-  	<!--
-  	<dependency>
-  		<groupId>org.apache.httpcomponents</groupId>
-  		<artifactId>httpmine</artifactId>
-  		<version>4.5.10</version>
-  	</dependency>
-  	-->
   	<dependency>
   		<groupId>org.apache.httpcomponents</groupId>
   		<artifactId>httpcore</artifactId>
   		<version>4.4.3</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId>
+  		<version>5.2.5.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-beans</artifactId>
+  		<version>5.2.5.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-jdbc</artifactId>
+  		<version>5.2.5.RELEASE</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.xerial</groupId>
+  		<artifactId>sqlite-jdbc</artifactId>
+  		<version>3.27.2.1</version>
   	</dependency>
   </dependencies>
   

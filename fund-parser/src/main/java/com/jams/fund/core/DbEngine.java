@@ -3,22 +3,17 @@ package com.jams.fund.core;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
 
-
-public class DBEngine {
-	private String engineName;
+public class DbEngine {
 	private JdbcTemplate jdbcTemplate;
-
-	public DBEngine(String engineName, JdbcTemplate jdbcTemplate) {
+	
+	public DbEngine( JdbcTemplate jdbcTemplate) {
 		super();
-		this.engineName = engineName;
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	

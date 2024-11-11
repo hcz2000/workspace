@@ -1,34 +1,59 @@
 package com.jams.fund;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.omg.CORBA.portable.InputStream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.yaml.snakeyaml.Yaml;
 
 public class BocDemo{
-
-	public static void main(String[] args) {
+	private Map<String,ProductConfig> configMap=new HashMap();
+	
+	public BocDemo() {
+        Yaml yaml = new Yaml();
+        try {
+        	FileInputStream inputStream = new FileInputStream("/home/hcz/work/pywork/Tagui/wm.yaml");
+            Map<String, Map<String,List<Map<String,String>>>> yamlMap = yaml.load(inputStream);
+            List<Map<String,String>> prds=yamlMap.get("bocwm").get("products");
+            for(Map<String,String> prd: prds ) {
+            	ProductConfig cfg=new ProductConfig();
+            	cfg.setCode(prd.get("code"));
+            	cfg.setUrl(prd.get("url"));
+            	cfg.setType(prd.get("value_type"));
+            	configMap.put(cfg.getCode(),cfg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void refreshAll() {
+		
+		configMap.forEach((key,cfg)->{
+			List<NetValue> netValues=fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
+		
+		for(NetValue item: netValues)
+		     System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
+			}
+		);
+	}
+	
+	public List<NetValue> fetchUpdate(String code,String url,String value_type){
 		FirefoxOptions opts=new FirefoxOptions();
 		opts.setCapability("pageLoadStrategy", "none");
 		FirefoxDriver driver=new FirefoxDriver(opts);
 		
-		/*
-		String code = "YLFFB2201";
-		String url = "https://www.bocwm.cn/html/1/netWorth/5173.html";
-		String value_type="net_value";
-        String last_sync_date = "2024-09-30";
-        double last_net_value = 1.00;
-        */
-		
-		String code = "HXTT01";
-		String url = "https://www.bocwm.cn/html/1/netWorth/4114.html";
-		String value_type="revenue";
+	
         String last_sync_date = "2024-09-30";
         double last_net_value = 1.00;
         		
@@ -71,8 +96,24 @@ public class BocDemo{
 				 netValues.add(newItem);
 			 }
 		}
+		
+		driver.close();
 
+		return netValues;
+	}
+
+	public static void main(String[] args) {
+			
+		BocDemo boc=new BocDemo();
+
+		boc.refreshAll();
+		/*
+		List<NetValue> netValues=boc.fetchUpdate("HXTT01",
+					"https://www.bocwm.cn/html/1/netWorth/4114.html",
+					"revenue");
+		
 		for(NetValue item: netValues)
 		     System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
+		     */
 	}
 }

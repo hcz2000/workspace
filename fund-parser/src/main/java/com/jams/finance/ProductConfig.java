@@ -1,4 +1,4 @@
-package com.jams.fund;
+package com.jams.finance;
 
 public class ProductConfig {
 	private String code;

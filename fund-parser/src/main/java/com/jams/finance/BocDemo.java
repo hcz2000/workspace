@@ -1,4 +1,4 @@
-package com.jams.fund;
+package com.jams.finance;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;

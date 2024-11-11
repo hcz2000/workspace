@@ -1,4 +1,4 @@
-package com.jams.fund.core;
+package com.jams.finance.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

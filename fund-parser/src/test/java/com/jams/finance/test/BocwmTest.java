@@ -1,4 +1,4 @@
-package com.jams.fund.test;
+package com.jams.finance.test;
 
 import java.util.Iterator;
 import java.util.List;

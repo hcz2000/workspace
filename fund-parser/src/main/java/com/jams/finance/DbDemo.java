@@ -1,4 +1,4 @@
-package com.jams.fund;
+package com.jams.finance;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,8 +9,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.jams.fund.core.DbEngine;
-import com.jams.fund.core.DatabaseConfig;
+import com.jams.finance.core.DatabaseConfig;
+import com.jams.finance.core.DbEngine;
 
 
 public class DbDemo{

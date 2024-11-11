@@ -1,4 +1,4 @@
-package com.jams.fund.core;
+package com.jams.finance.core;
 
 import java.util.List;
 import java.util.Map;

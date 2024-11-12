@@ -8,63 +8,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.omg.CORBA.portable.InputStream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.yaml.snakeyaml.Yaml;
 
-public class BocDemo{
-	private Map<String,ProductConfig> configMap=new HashMap();
+public class BocwmLoader extends BaseLoader{
+	private FirefoxDriver driver;
 	
-	public BocDemo() {
-        Yaml yaml = new Yaml();
-        try {
-        	FileInputStream inputStream = new FileInputStream("/home/hcz/work/pywork/Tagui/wm.yaml");
-            Map<String, Map<String,List<Map<String,String>>>> yamlMap = yaml.load(inputStream);
-            List<Map<String,String>> prds=yamlMap.get("bocwm").get("products");
-            for(Map<String,String> prd: prds ) {
-            	ProductConfig cfg=new ProductConfig();
-            	cfg.setCode(prd.get("code"));
-            	cfg.setUrl(prd.get("url"));
-            	cfg.setType(prd.get("value_type"));
-            	configMap.put(cfg.getCode(),cfg);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-	}
-	
-	public void refreshAll() {
-		
-		configMap.forEach((key,cfg)->{
-			List<NetValue> netValues=fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
-		
-		for(NetValue item: netValues)
-		     System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
-			}
-		);
+	public BocwmLoader() {
+        super();
+
 	}
 	
 	public List<NetValue> fetchUpdate(String code,String url,String value_type){
-		FirefoxOptions opts=new FirefoxOptions();
-		opts.setCapability("pageLoadStrategy", "none");
-		FirefoxDriver driver=new FirefoxDriver(opts);
-		
-	
         String last_sync_date = "2024-09-30";
         double last_net_value = 1.00;
         		
+
 		driver.get(url);
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
-	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.textToBePresentInElement(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));
+
 		WebElement contentDiv=driver.findElement(By.id("content"));
 		List<WebElement> rows = contentDiv.findElements(By.xpath("//table[@class='layui-table']/tbody/tr"));
 
-		List<NetValue> netValues=new ArrayList();
+		List<NetValue> netValues=new ArrayList<NetValue>();
 		if("net_value".equals(value_type)){
 			 for(WebElement row : rows) {
 				 List<WebElement> cols=row.findElements(By.tagName("td"));
@@ -77,7 +50,7 @@ public class BocDemo{
 			 }
 			 Collections.reverse(netValues);
 		}else {
-			 List<Revenue> revenues=new ArrayList();
+			 List<Revenue> revenues=new ArrayList<Revenue>();
 			 for( WebElement row : rows) {
 				 List<WebElement> cols = row.findElements(By.tagName("td"));
 				 String rpt_date=cols.get(6).getText();
@@ -97,16 +70,14 @@ public class BocDemo{
 			 }
 		}
 		
-		driver.close();
-
 		return netValues;
 	}
 
 	public static void main(String[] args) {
 			
-		BocDemo boc=new BocDemo();
+		BocwmLoader boc=new BocwmLoader();
 
-		boc.refreshAll();
+		boc.refreshCatalog();
 		/*
 		List<NetValue> netValues=boc.fetchUpdate("HXTT01",
 					"https://www.bocwm.cn/html/1/netWorth/4114.html",
@@ -116,4 +87,28 @@ public class BocDemo{
 		     System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
 		     */
 	}
+
+	@Override
+	public void preFetch() {
+		FirefoxOptions opts=new FirefoxOptions();
+		opts.setCapability("pageLoadStrategy", "none");
+		driver=new FirefoxDriver(opts);
+		driver.manage().window().maximize();
+		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+	}
+
+	@Override
+	public void postFetch() {
+		if(driver!=null) {
+			driver.close();
+		}
+	}
+
+	@Override
+	public String getCatalog() {
+		return "中银理财";
+	}
+
+
+
 }

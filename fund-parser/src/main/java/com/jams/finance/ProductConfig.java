@@ -1,6 +1,7 @@
 package com.jams.finance;
 
 public class ProductConfig {
+	private String catalog;
 	private String code;
 	private String desc;
 	private String url;
@@ -10,12 +11,21 @@ public class ProductConfig {
 		
 	}
 
-	public ProductConfig(String code, String desc, String url, String type) {
-		super();
+	public ProductConfig(String catalog,String code, String desc, String url, String type) {
+		this.catalog=catalog;
 		this.code = code;
 		this.desc = desc;
 		this.url = url;
 		this.type = type;
+	}
+	
+
+	public String getCatalog() {
+		return catalog;
+	}
+
+	public void setCatalog(String catalog) {
+		this.catalog = catalog;
 	}
 
 	public String getCode() {
@@ -49,4 +59,5 @@ public class ProductConfig {
 	public void setType(String type) {
 		this.type = type;
 	}
+
 }

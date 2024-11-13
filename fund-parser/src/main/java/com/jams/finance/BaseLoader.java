@@ -1,6 +1,7 @@
 package com.jams.finance;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -55,7 +56,9 @@ public abstract class BaseLoader{
 					netValues = fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
 					for(NetValue item: netValues)
 						System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
-				} catch (Exception e) {
+				}catch (FileNotFoundException e) {
+		        	System.out.println(e.getMessage());
+		        }catch (Exception e) {
 					e.printStackTrace();
 				}
 			});

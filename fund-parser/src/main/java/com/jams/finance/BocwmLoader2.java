@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -30,7 +32,8 @@ public class BocwmLoader2 extends BaseLoader{
 
 		List<NetValue> netValues=new ArrayList<NetValue>();
 		if("net_value".equals(value_type)){
-			 for(HtmlTableRow row : table.getRows()) {
+			 for(int i=1,rowcount=table.getRowCount();i<rowcount;i++) {
+				 HtmlTableRow row = table.getRow(i);
 				 String rpt_date=row.getCell(6).getVisibleText();
 			     double net_value=Double.parseDouble(row.getCell(2).getVisibleText());
 			     if(rpt_date.compareTo(last_sync_date)<=0)
@@ -41,7 +44,8 @@ public class BocwmLoader2 extends BaseLoader{
 			 Collections.reverse(netValues);
 		}else {
 			 List<Revenue> revenues=new ArrayList<Revenue>();
-			 for(HtmlTableRow row : table.getRows()) {
+			 for(int i=1,rowcount=table.getRowCount();i<rowcount;i++) {
+				 HtmlTableRow row = table.getRow(i);
 				 String rpt_date=row.getCell(6).getVisibleText();
 			     double revenue = Double.parseDouble(row.getCell(6).getVisibleText())/10000;
 			     if(rpt_date.compareTo(last_sync_date)<=0)
@@ -82,6 +86,7 @@ public class BocwmLoader2 extends BaseLoader{
 		webClient = new WebClient();
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
+		webClient.setCssErrorHandler(new SilentCssErrorHandler());
 	}
 
 	@Override

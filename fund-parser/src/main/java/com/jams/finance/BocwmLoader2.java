@@ -10,6 +10,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
+import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
@@ -29,11 +30,11 @@ public class BocwmLoader2 extends BaseLoader{
         HtmlPage page = webClient.getPage(url);
         HtmlDivision contentDiv=(HtmlDivision) page.getHtmlElementById("content");
 		HtmlTable table = contentDiv.getFirstByXPath("//table[@class='layui-table']");
-
+		//HtmlTableBody tbody=table.getBodies().get(0);
 		List<NetValue> netValues=new ArrayList<NetValue>();
 		if("net_value".equals(value_type)){
-			 for(int i=1,rowcount=table.getRowCount();i<rowcount;i++) {
-				 HtmlTableRow row = table.getRow(i);
+			 for(HtmlTableRow row: table.getRows()) {
+				 System.out.print("----"+row.getCell(6).getVisibleText()+":"+row.getCell(2).getVisibleText());
 				 String rpt_date=row.getCell(6).getVisibleText();
 			     double net_value=Double.parseDouble(row.getCell(2).getVisibleText());
 			     if(rpt_date.compareTo(last_sync_date)<=0)
@@ -44,10 +45,10 @@ public class BocwmLoader2 extends BaseLoader{
 			 Collections.reverse(netValues);
 		}else {
 			 List<Revenue> revenues=new ArrayList<Revenue>();
-			 for(int i=1,rowcount=table.getRowCount();i<rowcount;i++) {
-				 HtmlTableRow row = table.getRow(i);
+			 for(HtmlTableRow row: table.getRows()) {
+				 System.out.print("----"+row.getCell(6).getVisibleText()+":"+row.getCell(4).getVisibleText());
 				 String rpt_date=row.getCell(6).getVisibleText();
-			     double revenue = Double.parseDouble(row.getCell(6).getVisibleText())/10000;
+			     double revenue = Double.parseDouble(row.getCell(4).getVisibleText())/10000;
 			     if(rpt_date.compareTo(last_sync_date)<=0)
 			    	 break;
 			     Revenue item=new Revenue(code,rpt_date,revenue);
@@ -86,6 +87,8 @@ public class BocwmLoader2 extends BaseLoader{
 		webClient = new WebClient();
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
+		//webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
 	}
 

@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlDivision;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTable;
+import com.gargoylesoftware.htmlunit.html.HtmlTableCell;
+import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
 
-public class BocwmLoader extends BaseLoader{
-	private FirefoxDriver driver;
+public class BocwmLoader2 extends BaseLoader{
+	private WebClient webClient;
 	
-	public BocwmLoader() {
+	public BocwmLoader2() {
         super();
 	}
 	
@@ -24,19 +24,15 @@ public class BocwmLoader extends BaseLoader{
         String last_sync_date = lastRecord.getDate();
         double last_net_value = lastRecord.getValue();
         System.out.println("  "+last_sync_date+":"+last_net_value);
-		driver.get(url);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.textToBePresentInElement(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));
-
-		WebElement contentDiv=driver.findElement(By.id("content"));
-		List<WebElement> rows = contentDiv.findElements(By.xpath("//table[@class='layui-table']/tbody/tr"));
+        HtmlPage page = webClient.getPage(url);
+        HtmlDivision contentDiv=(HtmlDivision) page.getHtmlElementById("content");
+		HtmlTable table = contentDiv.getFirstByXPath("//table[@class='layui-table']");
 
 		List<NetValue> netValues=new ArrayList<NetValue>();
 		if("net_value".equals(value_type)){
-			 for(WebElement row : rows) {
-				 List<WebElement> cols=row.findElements(By.tagName("td"));
-			     String rpt_date=cols.get(6).getText();
-			     double net_value=Double.parseDouble(cols.get(2).getText());
+			 for(HtmlTableRow row : table.getRows()) {
+				 String rpt_date=row.getCell(6).getVisibleText();
+			     double net_value=Double.parseDouble(row.getCell(2).getVisibleText());
 			     if(rpt_date.compareTo(last_sync_date)<=0)
 			    	 break;
 			    	 
@@ -45,10 +41,9 @@ public class BocwmLoader extends BaseLoader{
 			 Collections.reverse(netValues);
 		}else {
 			 List<Revenue> revenues=new ArrayList<Revenue>();
-			 for( WebElement row : rows) {
-				 List<WebElement> cols = row.findElements(By.tagName("td"));
-				 String rpt_date=cols.get(6).getText();
-			     double revenue = Double.parseDouble(cols.get(4).getText())/10000;
+			 for(HtmlTableRow row : table.getRows()) {
+				 String rpt_date=row.getCell(6).getVisibleText();
+			     double revenue = Double.parseDouble(row.getCell(6).getVisibleText())/10000;
 			     if(rpt_date.compareTo(last_sync_date)<=0)
 			    	 break;
 			     Revenue item=new Revenue(code,rpt_date,revenue);
@@ -69,7 +64,7 @@ public class BocwmLoader extends BaseLoader{
 
 	public static void main(String[] args) {
 			
-		BocwmLoader boc=new BocwmLoader();
+		BocwmLoader2 boc=new BocwmLoader2();
 
 		boc.refreshCatalog();
 		/*
@@ -84,17 +79,15 @@ public class BocwmLoader extends BaseLoader{
 
 	@Override
 	public void preFetch() {
-		FirefoxOptions opts=new FirefoxOptions();
-		opts.setCapability("pageLoadStrategy", "none");
-		driver=new FirefoxDriver(opts);
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+		webClient = new WebClient();
+		webClient.getOptions().setJavaScriptEnabled(true);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
 	}
 
 	@Override
 	public void postFetch() {
-		if(driver!=null) {
-			driver.close();
+		if(webClient!=null) {
+			webClient.close();
 		}
 	}
 

@@ -50,10 +50,14 @@ public abstract class BaseLoader{
 		try {
 			config.forEach((key,cfg)->{
 				System.out.println(key+"---"+cfg.getUrl());
-				List<NetValue> netValues=fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
-				for(NetValue item: netValues)
-					System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
-
+				List<NetValue> netValues;
+				try {
+					netValues = fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
+					for(NetValue item: netValues)
+						System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			});
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -81,7 +85,7 @@ public abstract class BaseLoader{
 		return lastRecord;
 	}
 	
-	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type);
+	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception;
 	abstract public void preFetch();
 	abstract public void postFetch();
 	abstract public String getCatalog();

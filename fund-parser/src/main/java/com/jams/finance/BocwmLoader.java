@@ -1,35 +1,29 @@
 package com.jams.finance;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.yaml.snakeyaml.Yaml;
+
 
 public class BocwmLoader extends BaseLoader{
 	private FirefoxDriver driver;
 	
 	public BocwmLoader() {
         super();
-
 	}
 	
 	public List<NetValue> fetchUpdate(String code,String url,String value_type){
-        String last_sync_date = "2024-09-30";
-        double last_net_value = 1.00;
-        		
-
+		NetValue lastRecord=getLastRecord(code);
+        String last_sync_date = lastRecord.getDate();
+        double last_net_value = lastRecord.getValue();
+        System.out.println("  "+last_sync_date+":"+last_net_value);
 		driver.get(url);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.textToBePresentInElement(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));

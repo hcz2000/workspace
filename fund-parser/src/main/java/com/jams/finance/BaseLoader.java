@@ -1,24 +1,27 @@
 package com.jams.finance;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.yaml.snakeyaml.Yaml;
+
+import com.jams.finance.core.DatabaseConfig;
+import com.jams.finance.core.DbEngine;
 
 public abstract class BaseLoader{
 	protected Map<String,ProductConfig> config=new HashMap<String,ProductConfig>();
+	private DbEngine engine;
 	
 	public BaseLoader() {
+		ApplicationContext ctx=new AnnotationConfigApplicationContext(DatabaseConfig.class);
+		engine=(DbEngine) ctx.getBean("dbEngine");
+		
         Yaml yaml = new Yaml();
         try {
         	FileInputStream inputStream = new FileInputStream("/home/hcz/work/pywork/Tagui/wm.yaml");
@@ -43,15 +46,39 @@ public abstract class BaseLoader{
 	}
 	
 	public void refreshCatalog() {
-		preFetch();		
-		config.forEach((key,cfg)->{
-			System.out.println(key+"---"+cfg.getUrl());
-			List<NetValue> netValues=fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
-			for(NetValue item: netValues)
-				System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
+		preFetch();
+		try {
+			config.forEach((key,cfg)->{
+				System.out.println(key+"---"+cfg.getUrl());
+				List<NetValue> netValues=fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
+				for(NetValue item: netValues)
+					System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
 
-		});
-		postFetch();
+			});
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			postFetch();
+		}
+	}
+	
+	protected NetValue getLastRecord(String code) {
+		List<Map<String, Object>> rows=engine.queryForList("select rpt_date,value from netvalue where code='"
+																+code+"' order by rpt_date desc");
+		
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime twoYearsAgo = now.minus(2, ChronoUnit.YEARS);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+		NetValue lastRecord=new NetValue(code,twoYearsAgo.format(formatter),1.0000);
+		if(rows.size()>0) {
+			lastRecord.setCode(code);
+			Map<String, Object> firstRow=rows.get(0);
+			lastRecord.setDate((String)(firstRow.get("rpt_date")));
+			lastRecord.setValue((Double)(firstRow.get("value")));
+		}
+		
+		return lastRecord;
 	}
 	
 	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type);

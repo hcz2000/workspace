@@ -1,26 +1,25 @@
 package com.jams.finance;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.yaml.snakeyaml.Yaml;
 
 import com.jams.finance.core.DatabaseConfig;
 import com.jams.finance.core.DbEngine;
 
-public abstract class BaseLoader{
+public abstract class BaseLoader implements AutoCloseable{
 	protected Map<String,ProductConfig> config=new HashMap<String,ProductConfig>();
+	private AnnotationConfigApplicationContext ctx;
 	private DbEngine engine;
 	
 	public BaseLoader() {
-		ApplicationContext ctx=new AnnotationConfigApplicationContext(DatabaseConfig.class);
+		ctx=new AnnotationConfigApplicationContext(DatabaseConfig.class);
 		engine=(DbEngine) ctx.getBean("dbEngine");
 		
         Yaml yaml = new Yaml();
@@ -47,27 +46,20 @@ public abstract class BaseLoader{
 	}
 	
 	public void refreshCatalog() {
-		preFetch();
-		try {
-			config.forEach((key,cfg)->{
-				System.out.println(key+"---"+cfg.getUrl());
-				List<NetValue> netValues;
-				try {
-					netValues = fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
-					for(NetValue item: netValues)
-						System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
-				}catch (FileNotFoundException e) {
-		        	System.out.println(e.getMessage());
-		        }catch (Exception e) {
-					e.printStackTrace();
-				}
-			});
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			postFetch();
+		for(ProductConfig cfg: config.values()) {
+			try {
+				System.out.println ("-----Updating "+cfg.getCode());
+				List<NetValue> netValues = fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
+				for(NetValue item: netValues)
+					System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
+				write2DB(netValues);
+			}catch(Exception e){
+				System.out.println ("-----Update "+cfg.getCode()+ "Failed");
+				e.printStackTrace();
+			}
 		}
 	}
+		
 	
 	protected NetValue getLastRecord(String code) {
 		List<Map<String, Object>> rows=engine.queryForList("select rpt_date,value from netvalue where code='"
@@ -88,9 +80,22 @@ public abstract class BaseLoader{
 		return lastRecord;
 	}
 	
+    private void  write2DB(List<NetValue> net_values) {
+    	int cnt=0;
+        for(NetValue row : net_values) {
+        	String sql="insert into netvalue values('"+row.getCode()+"','"+row.getDate()+"',"+row.getValue()+')';
+        	cnt=cnt+engine.update(sql);
+        }
+        if(cnt!=net_values.size())
+        	throw new DataException("Update DB Error,insert "+net_values.size()+
+        			" records,success: "+cnt); 
+    }
+	
+	@Override
+    public void close() throws Exception {
+        ctx.close();
+    }
 	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception;
-	abstract public void preFetch();
-	abstract public void postFetch();
 	abstract public String getCatalog();
 	
 }

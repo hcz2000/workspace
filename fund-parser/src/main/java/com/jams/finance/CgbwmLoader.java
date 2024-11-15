@@ -11,6 +11,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
@@ -29,7 +30,8 @@ public class CgbwmLoader extends BaseLoader{
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		//Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.ALL);
 	}
 	
 	public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception{
@@ -43,8 +45,6 @@ public class CgbwmLoader extends BaseLoader{
         List<HtmlElement> menus = page.getByXPath("//li[@class='parentMenuItem']/span");
         for(HtmlElement menu : menus) {
         	if("信息披露".equals(menu.getVisibleText())){
-        		System.out.println(menu.asXml());
-        
                 if(menu.getAttribute("class").contains("has-child-down")) {
                     menu.click();
                     webClient.waitForBackgroundJavaScript(2000);
@@ -53,10 +53,8 @@ public class CgbwmLoader extends BaseLoader{
         }
         
         List<HtmlElement> sub_menus = page.getByXPath("//li[@class='childMenuItem']/span");
-        HtmlElement search_menu;
         for(HtmlElement sub_menu : sub_menus) {
             if("产品公告搜索".equals(sub_menu.getVisibleText())) {
-                  search_menu=sub_menu;
                   if(sub_menu.getAttribute("class").contains("has-child-up2")) {
                        sub_menu.click();
                        webClient.waitForBackgroundJavaScript(2000);
@@ -68,13 +66,19 @@ public class CgbwmLoader extends BaseLoader{
                   }
                   break;
             }
-        }            
-            
+        }  
+
+        //HtmlDivision outputDiv=page.getFirstByXPath("//div[@class='ui-flex is-vertical']");
+        //System.out.println("-----------------before--------------------------\n"+outputDiv.asXml());
+        
         HtmlTextInput search_input = page.getFirstByXPath("//input[@class='el-input__inner']");
         search_input.setText(code);
         HtmlButton search_button = page.getFirstByXPath("//div[@class='el-input-group__append']/button");
         search_button.click();
-        webClient.waitForBackgroundJavaScript(2000);
+        webClient.waitForBackgroundJavaScript(5000);
+
+        HtmlDivision outputDiv=page.getFirstByXPath("//div[@class='ui-flex is-vertical']");
+        System.out.println("-----------------after--------------------------\n"+outputDiv.asXml());
 
 		List<NetValue> netValues=new ArrayList<NetValue>();
         List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");
@@ -84,17 +88,19 @@ public class CgbwmLoader extends BaseLoader{
              System.out.println("No update");
              return netValues;
         }
-		System.out.println("----"+outputList.get(0).asXml());
+		//System.out.println("----"+outputList.get(0).asXml());
 
 		
         while(!outputList.isEmpty()) {
         	HtmlDivision oldest_report = outputList.get(outputList.size()-1);
+        	//System.out.println(oldest_report.asXml());
             String oldest_release_date = ((HtmlDivision)oldest_report.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
             if(oldest_release_date.compareTo(last_sync_date)>=0) {
             	HtmlButton next_button= page.getFirstByXPath("//button[@class='btn-next']");
                 if(!next_button.isDisabled()) {
+                	System.out.println(oldest_release_date+"------->Next page");
                     next_button.click();
-                    webClient.waitForBackgroundJavaScript(2000);
+                    webClient.waitForBackgroundJavaScript(5000);
                     outputList = page.getByXPath("//div[@class='outList']");
                     continue;
                 }
@@ -121,20 +127,20 @@ public class CgbwmLoader extends BaseLoader{
                     	NetValue onerow=new NetValue(code,rpt_date,net_value);
                         netValues.add(onerow);
                     }
-                    page.getWebWindow().getPreviousPage();
+                    page.getEnclosingWindow().getHistory().back();
                     webClient.waitForBackgroundJavaScript(2000);
                 }
             }
-/*
-            prev_button=self.driver.find_element(By.XPATH,"//button[@class='btn-prev']")
-            if prev_button.is_enabled():
-                #prev_button.click()
-                self.driver.execute_script("arguments[0].click()", prev_button)
-                time.sleep(2)
-                outputList = self.driver.find_elements(By.XPATH, "//div[@class='outList']")
-            else:
-                break
-  */
+
+            HtmlButton prev_button=page.getFirstByXPath("//button[@class='btn-prev']");
+            if(!prev_button.isDisabled()){
+                prev_button.click();
+                //page.executeJavaScript("arguments[0].click()", prev_button)
+                webClient.waitForBackgroundJavaScript(2000);
+                outputList = page.getByXPath("//div[@class='outList']");
+            }else
+                break;
+  
         }
         
 		return netValues;

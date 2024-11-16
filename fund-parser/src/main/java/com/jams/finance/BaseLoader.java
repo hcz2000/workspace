@@ -24,7 +24,7 @@ public abstract class BaseLoader implements AutoCloseable{
 		
         Yaml yaml = new Yaml();
         try {
-        	FileInputStream inputStream = new FileInputStream("/home/hcz/work/pywork/Tagui/wm.yaml");
+        	FileInputStream inputStream = new FileInputStream("../../pywork/Tagui/wm.yaml");
             Map<String, Map<String,Object>> yamlMap = yaml.load(inputStream);
             String myCatalog=getCatalog();
             yamlMap.forEach((key,value)->{

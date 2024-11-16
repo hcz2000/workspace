@@ -14,7 +14,7 @@ public class DatabaseConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:/home/hcz/work/pywork/Tagui/data/wm.db");
+        dataSource.setUrl("jdbc:sqlite:../../pywork/Tagui/data/wm.db");
         //dataSource.setUsername("your_username");
         //dataSource.setPassword("your_password");
         return dataSource;

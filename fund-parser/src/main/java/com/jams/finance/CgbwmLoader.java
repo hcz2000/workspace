@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
@@ -24,7 +25,7 @@ public class CgbwmLoader extends BaseLoader{
 	
 	public CgbwmLoader() {
         super();
-        webClient = new WebClient();
+        webClient = new WebClient(BrowserVersion.FIREFOX);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -57,28 +58,24 @@ public class CgbwmLoader extends BaseLoader{
             if("产品公告搜索".equals(sub_menu.getVisibleText())) {
                   if(sub_menu.getAttribute("class").contains("has-child-up2")) {
                        sub_menu.click();
-                       webClient.waitForBackgroundJavaScript(2000);
+                       webClient.waitForBackgroundJavaScript(5000);
                   }else{
                        sub_menu.click();
-                       webClient.waitForBackgroundJavaScript(2000);
+                       webClient.waitForBackgroundJavaScript(5000);
                        sub_menu.click();
-                       webClient.waitForBackgroundJavaScript(2000);
+                       webClient.waitForBackgroundJavaScript(5000);
                   }
                   break;
             }
         }  
 
-        //HtmlDivision outputDiv=page.getFirstByXPath("//div[@class='ui-flex is-vertical']");
-        //System.out.println("-----------------before--------------------------\n"+outputDiv.asXml());
+
         
         HtmlTextInput search_input = page.getFirstByXPath("//input[@class='el-input__inner']");
-        search_input.setText(code);
         HtmlButton search_button = page.getFirstByXPath("//div[@class='el-input-group__append']/button");
+        search_input.setText(code);
         search_button.click();
         webClient.waitForBackgroundJavaScript(5000);
-
-        HtmlDivision outputDiv=page.getFirstByXPath("//div[@class='ui-flex is-vertical']");
-        System.out.println("-----------------after--------------------------\n"+outputDiv.asXml());
 
 		List<NetValue> netValues=new ArrayList<NetValue>();
         List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");

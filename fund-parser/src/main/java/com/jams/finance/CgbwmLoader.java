@@ -32,9 +32,9 @@ public class CgbwmLoader extends BaseLoader{
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
-		webClient.getOptions().setHistorySizeLimit(10);
-		//Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.ALL);
+		webClient.getCache().setMaxSize(200);
+		webClient.getOptions().setHistorySizeLimit(20);
+		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
 	}
 	
 	public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception{
@@ -119,7 +119,8 @@ public class CgbwmLoader extends BaseLoader{
                     continue;
                 String release_date=((HtmlDivision)row.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
                 if(release_date.compareTo(last_sync_date)>0) {
-                    row.click();
+                	/*
+                    page=row.click();
                     webClient.waitForBackgroundJavaScript(1000);
                     List<HtmlElement> cols=page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
            	        Double net_value=Double.parseDouble(cols.get(4).getVisibleText());
@@ -131,8 +132,7 @@ public class CgbwmLoader extends BaseLoader{
                     }
                     page.getEnclosingWindow().getHistory().back();
                     webClient.waitForBackgroundJavaScript(2000);
-                    //HtmlDivision prediv=page.getFirstByXPath("//div[@class='ui-flex-item'][2]");
-                    //System.out.println(prediv.asXml());
+                    */
                 }
             }
             HtmlButton prev_button=page.getFirstByXPath("//button[@class='btn-prev']");

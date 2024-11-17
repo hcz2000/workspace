@@ -12,6 +12,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSpan;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTable;
 import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
@@ -31,6 +32,7 @@ public class CgbwmLoader extends BaseLoader{
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
+		webClient.getOptions().setHistorySizeLimit(10);
 		//Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
 		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.ALL);
 	}
@@ -39,7 +41,7 @@ public class CgbwmLoader extends BaseLoader{
 		NetValue lastRecord=getLastRecord(code);
         String last_sync_date = lastRecord.getDate();
         double last_net_value = lastRecord.getValue();
-        //System.out.println("  "+last_sync_date+":"+last_net_value);
+        System.out.println("  "+last_sync_date+":"+last_net_value);
         HtmlPage page = webClient.getPage(url);
         webClient.waitForBackgroundJavaScript(5000);
         
@@ -73,9 +75,10 @@ public class CgbwmLoader extends BaseLoader{
         
         HtmlTextInput search_input = page.getFirstByXPath("//input[@class='el-input__inner']");
         HtmlButton search_button = page.getFirstByXPath("//div[@class='el-input-group__append']/button");
-        search_input.setText(code);
+        search_input.reset();
+        search_input.type(code);
         search_button.click();
-        webClient.waitForBackgroundJavaScript(5000);
+        webClient.waitForBackgroundJavaScript(2000);
 
 		List<NetValue> netValues=new ArrayList<NetValue>();
         List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");
@@ -95,8 +98,8 @@ public class CgbwmLoader extends BaseLoader{
             if(oldest_release_date.compareTo(last_sync_date)>=0) {
             	HtmlButton next_button= page.getFirstByXPath("//button[@class='btn-next']");
                 if(!next_button.isDisabled()) {
-                	System.out.println(oldest_release_date+"------->Next page");
-                    next_button.click();
+                    System.out.println("Now"+oldest_release_date+"Next page ...");
+                	next_button.click();
                     webClient.waitForBackgroundJavaScript(5000);
                     outputList = page.getByXPath("//div[@class='outList']");
                     continue;
@@ -109,8 +112,9 @@ public class CgbwmLoader extends BaseLoader{
         while(true) {
             for(int i = outputList.size()-1;i>=0;i--){
             	HtmlDivision row=outputList.get(i);
-                String title=((HtmlDivision)row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
-                String catalog=((HtmlDivision)row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
+                String title=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
+                String catalog=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
+                System.out.println(title);
                 if(!catalog.startsWith("净值公告"))
                     continue;
                 String release_date=((HtmlDivision)row.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
@@ -121,25 +125,30 @@ public class CgbwmLoader extends BaseLoader{
            	        Double net_value=Double.parseDouble(cols.get(4).getVisibleText());
                     String rpt_date=cols.get(6).getVisibleText();
                     if(rpt_date.compareTo(last_sync_date)>0){
+                    	System.out.println(rpt_date+"-"+net_value);
                     	NetValue onerow=new NetValue(code,rpt_date,net_value);
                         netValues.add(onerow);
                     }
                     page.getEnclosingWindow().getHistory().back();
                     webClient.waitForBackgroundJavaScript(2000);
+                    //HtmlDivision prediv=page.getFirstByXPath("//div[@class='ui-flex-item'][2]");
+                    //System.out.println(prediv.asXml());
                 }
             }
-
             HtmlButton prev_button=page.getFirstByXPath("//button[@class='btn-prev']");
-            if(!prev_button.isDisabled()){
-                prev_button.click();
-                //page.executeJavaScript("arguments[0].click()", prev_button)
-                webClient.waitForBackgroundJavaScript(2000);
-                outputList = page.getByXPath("//div[@class='outList']");
-            }else
-                break;
-  
+            if(prev_button.isDisabled()) {
+            	System.out.println("First page!");
+            	break;
+            }
+            System.out.println("Prev page...");
+            prev_button.click();
+            //page.executeJavaScript("arguments[0].click()", prev_button)
+            webClient.waitForBackgroundJavaScript(2000);
+            outputList = page.getByXPath("//div[@class='outList']");
         }
-        
+
+        for(NetValue row : netValues)
+        	System.out.println(row.getDate());
 		return netValues;
 	}
 

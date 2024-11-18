@@ -1,5 +1,6 @@
 package com.jams.finance;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -71,79 +72,72 @@ public class CgbwmLoader extends BaseLoader{
             }
         }  
 
-
-        
-        HtmlTextInput search_input = page.getFirstByXPath("//input[@class='el-input__inner']");
-        HtmlButton search_button = page.getFirstByXPath("//div[@class='el-input-group__append']/button");
-        search_input.reset();
-        search_input.type(code);
-        search_button.click();
-        webClient.waitForBackgroundJavaScript(2000);
-
-		List<NetValue> netValues=new ArrayList<NetValue>();
-        List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");
-        HtmlDivision newest_report = outputList.get(0);
-        String newest_release_date = ((HtmlDivision)newest_report.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
-        if(last_sync_date.compareTo(newest_release_date)>0) {
-             System.out.println("No update");
-             return netValues;
-        }
-		//System.out.println("----"+outputList.get(0).asXml());
-
-		
-        while(true) {
-        	for(HtmlDivision row: outputList) {
-        		String title=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
-                String catalog=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
-                System.out.println(title);
-                if(!catalog.startsWith("净值公告"))
-                    continue;
-                String release_date=((HtmlDivision)row.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
-                if(release_date.compareTo(last_sync_date)>=0) {
-                	row.click();
-                    webClient.waitForBackgroundJavaScript(1000);
-                    List<HtmlElement> cols=page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
-           	        Double net_value=Double.parseDouble(cols.get(4).getVisibleText());
-                    String rpt_date=cols.get(6).getVisibleText();
-                    System.out.println(rpt_date+"-"+net_value);
-                    if(rpt_date.compareTo(last_sync_date)>0){
-                    	System.out.println(rpt_date+"-"+net_value);
-                    	NetValue onerow=new NetValue(code,rpt_date,net_value);
-                        netValues.add(onerow);
-                    }
-                    HtmlDivision back=page.getFirstByXPath("//div[@class='headBack']");
-                    back.click();
-                    webClient.waitForBackgroundJavaScript(2000);
-                }else {
-                	break;
-                }
+		List<NetValue> reverseOrderedValues=new ArrayList<NetValue>();
+		boolean stop=false;
+        while(!stop) {
+        	int pageNo=1;
+        	List<NetValue> pageValues=getOnePage(page,code,pageNo);
+        	for(NetValue pageRow : pageValues ) {
+        		if(pageRow.getDate().compareTo(last_sync_date)>0) {
+        			reverseOrderedValues.add(pageRow);
+        		}else{
+        			stop=true;
+        		}
         	}
-        	
-        	HtmlDivision oldest_report = outputList.get(outputList.size()-1);
-        	//System.out.println(oldest_report.asXml());
-            String oldest_release_date = ((HtmlDivision)oldest_report.getFirstByXPath("//div[@class='myDate']")).getVisibleText();
-            if(oldest_release_date.compareTo(last_sync_date)>=0) {
-            	HtmlButton next_button= page.getFirstByXPath("//button[@class='btn-next']");
-                if(!next_button.isDisabled()) {
-                    System.out.println("Now "+oldest_release_date+">last_sync_date("+last_sync_date+"), Next page ...");
-                	next_button.click();
-                    webClient.waitForBackgroundJavaScript(5000);
-                    outputList = page.getByXPath("//div[@class='outList']");
-                    continue;
-                }
-            }else            
-            	break;
-            
+        	pageNo++;
         }
         
         List<NetValue> returnValues=new ArrayList<NetValue>();
-        for(int i=netValues.size()-1;i>=0;i--)
-        	returnValues.add(netValues.get(i));
+        for(int i=reverseOrderedValues.size()-1;i>=0;i--)
+        	returnValues.add(reverseOrderedValues.get(i));
         
         return returnValues;
 
 	}
 
+	private List<NetValue> getOnePage(HtmlPage page,String code,int pageNo) throws IOException {
+		
+		HtmlTextInput search_input = page.getFirstByXPath("//input[@class='el-input__inner']");
+        HtmlButton search_button = page.getFirstByXPath("//div[@class='el-input-group__append']/button");
+        search_input.reset();
+        search_input.type(code);
+        search_button.click();
+        webClient.waitForBackgroundJavaScript(2000);
+        
+        for(int i=pageNo;i>1;i--) {
+        	HtmlButton next_button= page.getFirstByXPath("//button[@class='btn-next']");
+            if(!next_button.isDisabled()) {
+                next_button.click();
+                webClient.waitForBackgroundJavaScript(2000);
+            }
+        }
+
+        List<NetValue> netValues=new ArrayList<NetValue>();
+        List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");
+        
+        for(HtmlDivision row: outputList) {
+    		String title=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
+            String catalog=((HtmlSpan)row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
+            System.out.println(title);
+            if(!catalog.startsWith("净值公告"))
+                continue;
+            
+            row.click();
+            webClient.waitForBackgroundJavaScript(1000);
+            List<HtmlElement> cols=page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
+       	    Double net_value=Double.parseDouble(cols.get(4).getVisibleText());
+            String rpt_date=cols.get(6).getVisibleText();
+            System.out.println(rpt_date+"-"+net_value);
+            NetValue onerow=new NetValue(code,rpt_date,net_value);
+            netValues.add(onerow);
+            HtmlDivision back=page.getFirstByXPath("//div[@class='headBack']");
+            back.click();
+            webClient.waitForBackgroundJavaScript(2000);
+        }
+        
+		return netValues;
+	}
+	
 	@Override
 	public void close() throws Exception{
 		if(webClient!=null) {

@@ -51,8 +51,8 @@ public abstract class BaseLoader implements AutoCloseable{
 				System.out.println ("-----Updating "+cfg.getCode());
 				List<NetValue> netValues = fetchUpdate(cfg.getCode(),cfg.getUrl(),cfg.getType());
 				for(NetValue item: netValues)
-					System.out.println(item.getCode()+":"+item.getDate()+"--"+String.valueOf(item.getValue()));
-				//write2DB(netValues);
+					System.out.println(item.getCode()+"  "+item.getDate()+"  "+String.valueOf(item.getValue()));
+				write2DB(netValues);
 			}catch(Exception e){
 				System.out.println ("-----Update "+cfg.getCode()+ "Failed");
 				e.printStackTrace();

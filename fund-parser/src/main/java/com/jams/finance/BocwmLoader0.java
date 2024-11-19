@@ -31,7 +31,7 @@ public class BocwmLoader0 extends BaseLoader{
         //System.out.println("  "+last_sync_date+":"+last_net_value);
 		driver.get(url);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.textToBePresentInElement(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));
 
 		WebElement contentDiv=driver.findElement(By.id("content"));
 		List<WebElement> rows = contentDiv.findElements(By.xpath("//table[@class='layui-table']/tbody/tr"));

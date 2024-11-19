@@ -38,7 +38,7 @@ public class CgbwmLoader extends BaseLoader {
 		double last_net_value = lastRecord.getValue();
 		System.out.println("##" + last_sync_date + "  " + last_net_value);
 		HtmlPage page = webClient.getPage(url);
-		webClient.waitForBackgroundJavaScript(5000);
+		webClient.waitForBackgroundJavaScript(2000);
 
 		List<NetValue> reverseOrderedValues = new ArrayList<NetValue>();
 		boolean stop = false;

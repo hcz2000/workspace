@@ -26,13 +26,13 @@ public abstract class BaseLoader implements AutoCloseable{
         try {
         	FileInputStream inputStream = new FileInputStream("../../pywork/Tagui/wm.yaml");
             Map<String, Map<String,Object>> yamlMap = yaml.load(inputStream);
-            String myCatalog=getCatalog();
+            String myVendor=getVendor();
             yamlMap.forEach((key,value)->{
-            	String catalog=(String) value.get("catalog");
-            	if(myCatalog.equals(catalog)){
+            	if(myVendor.equals(key)){
             		List<Map<String,String>> prds=(List<Map<String, String>>) value.get("products");
             		for(Map<String,String> prd: prds ) {
             			ProductConfig cfg=new ProductConfig();
+            			cfg.setVendor(key);
             			cfg.setCode(prd.get("code"));
             			cfg.setUrl(prd.get("url"));
             			cfg.setType(prd.get("value_type"));
@@ -80,7 +80,7 @@ public abstract class BaseLoader implements AutoCloseable{
 		return lastRecord;
 	}
 	
-    private void  write2DB(List<NetValue> net_values) {
+    protected void  write2DB(List<NetValue> net_values) {
     	int cnt=0;
         for(NetValue row : net_values) {
         	String sql="insert into netvalue values('"+row.getCode()+"','"+row.getDate()+"',"+row.getValue()+')';
@@ -96,6 +96,6 @@ public abstract class BaseLoader implements AutoCloseable{
         ctx.close();
     }
 	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception;
-	abstract public String getCatalog();
+	abstract public String getVendor();
 	
 }

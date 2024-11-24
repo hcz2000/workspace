@@ -1,6 +1,7 @@
 package com.jams.finance;
 
 public class ProductConfig {
+	private String vendor;
 	private String catalog;
 	private String code;
 	private String desc;
@@ -58,6 +59,14 @@ public class ProductConfig {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(String vendor) {
+		this.vendor = vendor;
 	}
 
 }

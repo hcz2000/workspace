@@ -82,8 +82,8 @@ public class BocwmLoader0 extends BaseLoader{
 	}
 
 	@Override
-	public String getCatalog() {
-		return "中银理财";
+	public String getVendor() {
+		return "bocwm";//中银
 	}
 
 	public static void main(String[] args) {

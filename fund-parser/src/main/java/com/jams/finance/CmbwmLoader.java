@@ -87,8 +87,8 @@ public class CmbwmLoader extends BaseLoader {
 	}
 
 	@Override
-	public String getCatalog() {
-		return "招银理财";
+	public String getVendor() {
+		return "cmbwm";//招银
 	}
 
 	public static void main(String[] args) {

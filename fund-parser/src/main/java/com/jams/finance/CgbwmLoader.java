@@ -111,18 +111,21 @@ public class CgbwmLoader extends BaseLoader {
 		for (HtmlDivision row : outputList) {
 			String title = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
 			String catalog = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
-			//System.out.println(title);
+			System.out.println(title);
 			if (!catalog.startsWith("净值公告"))
 				continue;
 
 			row.click();
 			webClient.waitForBackgroundJavaScript(1000);
 			List<HtmlElement> cols = page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
-			Double net_value = Double.parseDouble(cols.get(4).getVisibleText());
-			String rpt_date = cols.get(6).getVisibleText();
-			//System.out.println(rpt_date + "  " + net_value);
-			NetValue onerow = new NetValue(code, rpt_date, net_value);
-			netValues.add(onerow);
+			if(cols.size()>0) {
+				Double net_value = Double.parseDouble(cols.get(4).getVisibleText());
+				String rpt_date = cols.get(6).getVisibleText();
+				//System.out.println(rpt_date + "  " + net_value);
+				NetValue onerow = new NetValue(code, rpt_date, net_value);
+				netValues.add(onerow);
+			}
+
 			HtmlDivision back = page.getFirstByXPath("//div[@class='headBack']");
 			back.click();
 			webClient.waitForBackgroundJavaScript(2000);
@@ -140,8 +143,8 @@ public class CgbwmLoader extends BaseLoader {
 	}
 
 	@Override
-	public String getCatalog() {
-		return "广银理财";
+	public String getVendor() {
+		return "cgbwm";//广发
 	}
 
 	public static void main(String[] args) {

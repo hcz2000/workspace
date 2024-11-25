@@ -21,7 +21,7 @@ public class PawmLoader0 extends BaseLoader{
 	
 	public PawmLoader0() {
         super();
-        System.setProperty("webdriver.gecko.driver", "../../pywork/Tagui/geckodriver.exe");
+        //System.setProperty("webdriver.gecko.driver", "../../pywork/Tagui/geckodriver.exe");
 		FirefoxOptions opts=new FirefoxOptions();
 		opts.setCapability("pageLoadStrategy", "none");
 		driver=new FirefoxDriver(opts);
@@ -54,6 +54,7 @@ public class PawmLoader0 extends BaseLoader{
 					reverseOrderedValues.add(pageRow);
 				} else {
 					stop = true;
+					//System.out.println("---Stop");
 				}
 			}
 			pageNo++;
@@ -79,6 +80,7 @@ public class PawmLoader0 extends BaseLoader{
 	}
 	
 	private List<NetValue> getOnePage(String code,int pageNo) throws IOException,NoMoreDataException {
+		//System.out.println("---pageNo:"+pageNo);
 
 		List<NetValue> netValues = new ArrayList<NetValue>();
 		
@@ -88,12 +90,14 @@ public class PawmLoader0 extends BaseLoader{
 			List<WebElement> cols=row.findElements(By.xpath("./td"));
 			String rpt_date = cols.get(1).getText();
         	Double net_value = Double.parseDouble(cols.get(2).getText());
+			//System.out.println("---"+rpt_date+":"+net_value);
 			NetValue onerow = new NetValue(code, rpt_date, net_value);
 			netValues.add(onerow);
 		}
 		
 		WebElement next=driver.findElement(By.xpath("//li[@title='下一页']"));
 		if(next.getAttribute("aria-disabled")==null) {
+			//System.out.println("---Next page");
 			next.click();
 		}else {
 			throw new NoMoreDataException("End of Next page");

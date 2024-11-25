@@ -124,6 +124,8 @@ public class CgbwmLoader extends BaseLoader {
 				//System.out.println(rpt_date + "  " + net_value);
 				NetValue onerow = new NetValue(code, rpt_date, net_value);
 				netValues.add(onerow);
+			}else {
+				throw new DataException("Data Error");
 			}
 
 			HtmlDivision back = page.getFirstByXPath("//div[@class='headBack']");

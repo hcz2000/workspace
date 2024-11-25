@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -36,6 +37,13 @@ public class PawmLoader extends BaseLoader {
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
+		webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
+		    if (StringUtils.contains(sourceName, "index.js")) {
+		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
+		    }
+		    
+		    return sourceCode;
+		});
 		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
 	}
 
@@ -82,9 +90,11 @@ public class PawmLoader extends BaseLoader {
 	
 	private List<NetValue> getOnePage(HtmlPage page, String code, int pageNo) throws IOException,NoMoreDataException {
 		List<HtmlElement> menuList = page.getByXPath("//div[@role='tab']");
-		System.out.println("Menu:"+menuList.size());
+		System.out.println("pageNo:"+pageNo);
 		for (HtmlElement menu : menuList) {
+			System.out.print("Menu :"+menu.getVisibleText());
 			if ("净值表现".equals(menu.getVisibleText())) {
+				System.out.print("Clicking :"+menu.getVisibleText());
 				menu.click();
 				webClient.waitForBackgroundJavaScript(1000);
 				break;
@@ -93,7 +103,8 @@ public class PawmLoader extends BaseLoader {
 		
 		for (int i = pageNo; i > 1; i--) {
 			HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
-			System.out.println(next.asXml());
+			//System.out.println(next.asXml());
+			System.out.println("下一页");
 			if(next.getAttribute("aria-disabled")==null) {
 				next.click();
 				webClient.waitForBackgroundJavaScript(2000);
@@ -112,12 +123,12 @@ public class PawmLoader extends BaseLoader {
 			List<HtmlElement> cols=row.getByXPath("./td");
 			String rpt_date = cols.get(1).getVisibleText();
         	Double net_value = Double.parseDouble(cols.get(2).getVisibleText());
-			
+			System.out.println(rpt_date+": "+net_value);
 			NetValue onerow = new NetValue(code, rpt_date, net_value);
 			netValues.add(onerow);
-			HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
-			next.click();
-			webClient.waitForBackgroundJavaScript(2000);
+			//HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
+			//next.click();
+			//webClient.waitForBackgroundJavaScript(2000);
 		}
 
 		return netValues;

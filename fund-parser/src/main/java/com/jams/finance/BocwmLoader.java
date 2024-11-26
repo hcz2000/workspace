@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlTable;
-import com.gargoylesoftware.htmlunit.html.HtmlTableBody;
-import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.SilentCssErrorHandler;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlDivision;
+import org.htmlunit.html.HtmlTable;
+import org.htmlunit.html.HtmlTableBody;
+import org.htmlunit.html.HtmlTableRow;
 
 
 public class BocwmLoader extends BaseLoader{
@@ -26,7 +26,7 @@ public class BocwmLoader extends BaseLoader{
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 	
 	public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception{
@@ -36,7 +36,7 @@ public class BocwmLoader extends BaseLoader{
         //System.out.println("  "+last_sync_date+":"+last_net_value);
         HtmlPage page = webClient.getPage(url);
         webClient.waitForBackgroundJavaScript(5000);
-        HtmlDivision contentDiv=(HtmlDivision) page.getHtmlElementById("content");
+        HtmlDivision contentDiv=(HtmlDivision)(page.getHtmlElementById("content"));
 		HtmlTable table = contentDiv.getFirstByXPath("//table[@class='layui-table']");
 		//System.out.println("----"+table.asXml());
 		HtmlTableBody tbody=table.getBodies().get(0);

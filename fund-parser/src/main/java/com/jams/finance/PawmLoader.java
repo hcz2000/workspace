@@ -11,16 +11,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSpan;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
+import org.htmlunit.BrowserVersion;
+import org.htmlunit.SilentCssErrorHandler;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlButton;
+import org.htmlunit.html.HtmlDivision;
+import org.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSpan;
+import org.htmlunit.html.HtmlTextInput;
+import org.htmlunit.javascript.SilentJavaScriptErrorListener;
 
 public class PawmLoader extends BaseLoader {
 	private WebClient webClient;
@@ -37,14 +37,15 @@ public class PawmLoader extends BaseLoader {
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
+		/*
 		webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
 		    if (StringUtils.contains(sourceName, "index.js")) {
 		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
 		    }
 		    
 		    return sourceCode;
-		});
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		});*/
+		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
 	public List<NetValue> fetchUpdate(String code, String url, String value_type) throws Exception {
@@ -103,7 +104,7 @@ public class PawmLoader extends BaseLoader {
 		
 		for (int i = pageNo; i > 1; i--) {
 			HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
-			//System.out.println(next.asXml());
+			System.out.println(next.asXml());
 			System.out.println("下一页");
 			if(next.getAttribute("aria-disabled")==null) {
 				next.click();

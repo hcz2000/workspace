@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSpan;
-import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
-import com.gargoylesoftware.htmlunit.html.HtmlButton;
+import org.htmlunit.BrowserVersion;
+import org.htmlunit.SilentCssErrorHandler;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlDivision;
+import org.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSpan;
+import org.htmlunit.html.HtmlTextInput;
+import org.htmlunit.html.HtmlButton;
 
 public class CgbwmLoader extends BaseLoader {
 	private WebClient webClient;
@@ -27,9 +27,10 @@ public class CgbwmLoader extends BaseLoader {
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
-		webClient.getCache().setMaxSize(200);
-		webClient.getOptions().setHistorySizeLimit(30);
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
+		//webClient.getCache().setMaxSize(200);
+		//webClient.getOptions().setHistorySizeLimit(30);
+		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
 	public List<NetValue> fetchUpdate(String code, String url, String value_type) throws Exception {
@@ -116,12 +117,13 @@ public class CgbwmLoader extends BaseLoader {
 				continue;
 
 			row.click();
-			webClient.waitForBackgroundJavaScript(1000);
+			webClient.waitForBackgroundJavaScript(20000);
 			List<HtmlElement> cols = page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
 			if(cols.size()>0) {
 				Double net_value = Double.parseDouble(cols.get(4).getVisibleText());
 				String rpt_date = cols.get(6).getVisibleText();
-				//System.out.println(rpt_date + "  " + net_value);
+				System.out.println(rpt_date + "  " + net_value);
+				//System.out.println(cols.get(6).asXml());
 				NetValue onerow = new NetValue(code, rpt_date, net_value);
 				netValues.add(onerow);
 			}else {

@@ -11,7 +11,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlElement;
 
 
 public class CmbwmLoader0 extends BaseLoader{

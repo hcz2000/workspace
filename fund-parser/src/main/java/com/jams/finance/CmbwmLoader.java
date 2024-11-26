@@ -5,13 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.SilentCssErrorHandler;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlElement;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.javascript.SilentJavaScriptErrorListener;
+
+import org.htmlunit.SilentCssErrorHandler;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.HtmlDivision;
+import org.htmlunit.html.HtmlElement;
+import org.htmlunit.html.HtmlPage;
+
 
 public class CmbwmLoader extends BaseLoader {
 	private WebClient webClient;
@@ -28,7 +28,7 @@ public class CmbwmLoader extends BaseLoader {
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
-		Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.SEVERE);
+		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
 	public List<NetValue> fetchUpdate(String code, String url, String value_type) throws Exception {
@@ -39,7 +39,7 @@ public class CmbwmLoader extends BaseLoader {
 		System.out.println(url+"?prodTradeCode="+code+"&prodClcMode=01&finType=P");
 		HtmlPage page=webClient.getPage(url+"?prodTradeCode="+code+"&prodClcMode=01&finType=P");
 		webClient.waitForBackgroundJavaScript(2000);
-		System.out.println(page.asXml());		
+
 		HtmlDivision contentDiv=page.getFirstByXPath("//div[@class='proTabList']");
 		
 		System.out.println(contentDiv.asXml());

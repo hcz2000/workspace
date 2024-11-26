@@ -27,8 +27,8 @@ public class PawmLoader extends BaseLoader {
 
 	public PawmLoader() {
 		super();
-		//webClient = new WebClient(BrowserVersion.FIREFOX);
-		webClient = new WebClient();
+		webClient = new WebClient(BrowserVersion.FIREFOX);
+		//webClient = new WebClient();
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);

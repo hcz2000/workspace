@@ -3,9 +3,9 @@ package com.jams.finance;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.gargoylesoftware.htmlunit.ScriptException;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.javascript.JavaScriptErrorListener;
+import org.htmlunit.ScriptException;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.javascript.JavaScriptErrorListener;
 
 public class MyJavaScriptErrorListener implements JavaScriptErrorListener {
 

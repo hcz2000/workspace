@@ -53,9 +53,9 @@
     	<version>1.29</version>
 	</dependency>
 	<dependency>
-		<groupId>net.sourceforge.htmlunit</groupId>
+		<groupId>org.htmlunit</groupId>
     	<artifactId>htmlunit</artifactId>
-    	<version>2.70.0</version>
+    	<version>4.6.0</version>
 	</dependency>
   </dependencies>
   

@@ -27,8 +27,8 @@ public class PawmLoader extends BaseLoader {
 
 	public PawmLoader() {
 		super();
-		webClient = new WebClient(BrowserVersion.FIREFOX);
-		//webClient = new WebClient();
+		//webClient = new WebClient(BrowserVersion.FIREFOX);
+		webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -37,14 +37,13 @@ public class PawmLoader extends BaseLoader {
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
-		/*
 		webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
 		    if (StringUtils.contains(sourceName, "index.js")) {
 		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
 		    }
 		    
 		    return sourceCode;
-		});*/
+		});
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 

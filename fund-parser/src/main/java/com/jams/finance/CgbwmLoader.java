@@ -113,7 +113,7 @@ public class CgbwmLoader extends BaseLoader {
 			HtmlDivision row=outputList.get(cnt);
 			String title = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
 			String catalog = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
-			System.out.println(title);
+			//System.out.println(title);
 			if (!catalog.startsWith("净值公告"))
 				continue;
 
@@ -123,7 +123,7 @@ public class CgbwmLoader extends BaseLoader {
 			if(cols.size()>0) {
 				Double net_value = Double.parseDouble(cols.get(4).getVisibleText());
 				String rpt_date = cols.get(6).getVisibleText();
-				System.out.println(rpt_date + "  " + net_value);
+				//System.out.println(rpt_date + "  " + net_value);
 				NetValue onerow = new NetValue(code, rpt_date, net_value);
 				netValues.add(onerow);
 			}else {

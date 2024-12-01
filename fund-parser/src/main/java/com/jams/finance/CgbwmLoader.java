@@ -28,8 +28,8 @@ public class CgbwmLoader extends BaseLoader {
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
-		//webClient.getCache().setMaxSize(200);
-		//webClient.getOptions().setHistorySizeLimit(30);
+		webClient.getCache().setMaxSize(200);
+		webClient.getOptions().setHistorySizeLimit(30);
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
@@ -108,8 +108,9 @@ public class CgbwmLoader extends BaseLoader {
 
 		List<NetValue> netValues = new ArrayList<NetValue>();
 		List<HtmlDivision> outputList = page.getByXPath("//div[@class='outList']");
-
-		for (HtmlDivision row : outputList) {
+		
+		for (int cnt=0;cnt<outputList.size();cnt++) {
+			HtmlDivision row=outputList.get(cnt);
 			String title = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
 			String catalog = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
 			System.out.println(title);
@@ -117,23 +118,22 @@ public class CgbwmLoader extends BaseLoader {
 				continue;
 
 			row.click();
-			webClient.waitForBackgroundJavaScript(20000);
+			webClient.waitForBackgroundJavaScript(1000);
 			List<HtmlElement> cols = page.getByXPath("//div[@id='news_content_id']/table/tbody/tr[2]/td/span");
 			if(cols.size()>0) {
 				Double net_value = Double.parseDouble(cols.get(4).getVisibleText());
 				String rpt_date = cols.get(6).getVisibleText();
 				System.out.println(rpt_date + "  " + net_value);
-				//System.out.println(cols.get(6).asXml());
 				NetValue onerow = new NetValue(code, rpt_date, net_value);
 				netValues.add(onerow);
 			}else {
 				throw new DataException("Data Error");
 			}
-
-			HtmlDivision back = page.getFirstByXPath("//div[@class='headBack']");
-			back.click();
+			webClient.getWebWindows().get(0).getHistory().back();
 			webClient.waitForBackgroundJavaScript(2000);
+			outputList = page.getByXPath("//div[@class='outList']");
 		}
+
 
 		return netValues;
 	}

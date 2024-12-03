@@ -11,7 +11,8 @@ public class MyJavaScriptErrorListener implements JavaScriptErrorListener {
 
 	@Override
 	public void scriptException(HtmlPage page, ScriptException scriptException) {
-		System.out.println("ScriptException: "+scriptException.getMessage());
+		//System.out.println("ScriptException: "+scriptException.getMessage());
+		System.out.println(page.asXml());
 		//scriptException.printStackTrace();
 	}
 

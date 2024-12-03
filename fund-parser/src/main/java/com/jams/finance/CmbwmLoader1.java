@@ -25,7 +25,7 @@ public class CmbwmLoader1 extends BaseLoader {
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
-		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
+		//webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);

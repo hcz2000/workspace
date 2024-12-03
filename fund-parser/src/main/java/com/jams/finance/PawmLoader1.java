@@ -27,8 +27,8 @@ public class PawmLoader1 extends BaseLoader {
 
 	public PawmLoader1() {
 		super();
-		//webClient = new WebClient(BrowserVersion.FIREFOX);
-		webClient = new WebClient(BrowserVersion.CHROME);
+		webClient = new WebClient(BrowserVersion.FIREFOX);
+		//webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -38,7 +38,7 @@ public class PawmLoader1 extends BaseLoader {
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
-		webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
+		/*webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
 		    if (StringUtils.contains(sourceName, "index.js")) {
 		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
 		    }
@@ -48,7 +48,7 @@ public class PawmLoader1 extends BaseLoader {
 		    	sourceCode = sourceCode.replace("await ", StringUtils.EMPTY);
 		    }
 		    return sourceCode;
-		});
+		});*/
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
@@ -109,7 +109,7 @@ public class PawmLoader1 extends BaseLoader {
 		
 		for (int i = pageNo; i > 1; i--) {
 			HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
-			System.out.println(next.asXml());
+			//System.out.println(next.asXml());
 			System.out.println("下一页");
 			if(next.getAttribute("aria-disabled")==null) {
 				next.click();

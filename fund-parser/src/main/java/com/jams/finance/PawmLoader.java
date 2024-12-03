@@ -33,6 +33,7 @@ public class PawmLoader extends BaseLoader {
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
@@ -89,8 +90,9 @@ public class PawmLoader extends BaseLoader {
 	}
 	
 	private List<NetValue> getOnePage(HtmlPage page, String code, int pageNo) throws IOException,NoMoreDataException {
+		webClient.waitForBackgroundJavaScript(1000);
 		List<HtmlElement> menuList = page.getByXPath("//div[@role='tab']");
-		System.out.println("pageNo:"+pageNo);
+		System.out.println("pageNo:"+pageNo+"--"+page.getTitleText());
 		for (HtmlElement menu : menuList) {
 			System.out.print("Menu :"+menu.getVisibleText());
 			if ("净值表现".equals(menu.getVisibleText())) {

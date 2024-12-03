@@ -1,5 +1,6 @@
 package com.jams.finance;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,10 +13,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public class BocwmLoader0 extends BaseLoader{
+public class BocwmLoader extends BaseLoader{
 	private FirefoxDriver driver;
 	
-	public BocwmLoader0() {
+	public BocwmLoader() {
         super();
 		FirefoxOptions opts=new FirefoxOptions();
 		opts.setCapability("pageLoadStrategy", "none");
@@ -30,7 +31,7 @@ public class BocwmLoader0 extends BaseLoader{
         double last_net_value = lastRecord.getValue();
         //System.out.println("  "+last_sync_date+":"+last_net_value);
 		driver.get(url);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));
 
 		WebElement contentDiv=driver.findElement(By.id("content"));
@@ -87,7 +88,7 @@ public class BocwmLoader0 extends BaseLoader{
 	}
 
 	public static void main(String[] args) {
-		try(BocwmLoader0 boc=new BocwmLoader0()){
+		try(BocwmLoader boc=new BocwmLoader()){
 			boc.refreshCatalog();
 		}catch (Exception e) {
 			e.printStackTrace();

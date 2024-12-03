@@ -15,10 +15,10 @@ import org.htmlunit.html.HtmlTableBody;
 import org.htmlunit.html.HtmlTableRow;
 
 
-public class BocwmLoader extends BaseLoader{
+public class BocwmLoader1 extends BaseLoader{
 	private WebClient webClient;
 	
-	public BocwmLoader() {
+	public BocwmLoader1() {
         super();
         webClient = new WebClient();
 		webClient.getOptions().setJavaScriptEnabled(true);
@@ -88,7 +88,7 @@ public class BocwmLoader extends BaseLoader{
 	}
 
 	public static void main(String[] args) {
-		try(BocwmLoader boc=new BocwmLoader()){
+		try(BocwmLoader1 boc=new BocwmLoader1()){
 			boc.refreshCatalog();
 		}catch (Exception e) {
 			e.printStackTrace();

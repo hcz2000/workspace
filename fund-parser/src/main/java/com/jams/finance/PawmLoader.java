@@ -27,23 +27,25 @@ public class PawmLoader extends BaseLoader {
 
 	public PawmLoader() {
 		super();
-		//webClient = new WebClient(BrowserVersion.FIREFOX);
-		webClient = new WebClient(BrowserVersion.CHROME);
+		webClient = new WebClient(BrowserVersion.FIREFOX);
+		//webClient = new WebClient(BrowserVersion.CHROME);
 		webClient.getOptions().setJavaScriptEnabled(true);
 		webClient.getOptions().setTimeout(10000);
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setCssEnabled(false);
+		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
 		webClient.setCssErrorHandler(new SilentCssErrorHandler());
 		webClient.setJavaScriptErrorListener(new MyJavaScriptErrorListener());
 		webClient.getCache().setMaxSize(200);
 		webClient.getOptions().setHistorySizeLimit(30);
+		/*
 		webClient.setScriptPreProcessor((htmlPage, sourceCode, sourceName, lineNumber, htmlElement) -> {
 		    if (StringUtils.contains(sourceName, "index.js")) {
-		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
+		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "0");
 		    }
 		    
 		    return sourceCode;
-		});
+		});*/
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
 	}
 
@@ -89,8 +91,10 @@ public class PawmLoader extends BaseLoader {
 	}
 	
 	private List<NetValue> getOnePage(HtmlPage page, String code, int pageNo) throws IOException,NoMoreDataException {
+		webClient.waitForBackgroundJavaScript(5000);
 		List<HtmlElement> menuList = page.getByXPath("//div[@role='tab']");
 		System.out.println("pageNo:"+pageNo);
+		System.out.println("page:"+page.asXml());
 		for (HtmlElement menu : menuList) {
 			System.out.print("Menu :"+menu.getVisibleText());
 			if ("净值表现".equals(menu.getVisibleText())) {
@@ -126,8 +130,6 @@ public class PawmLoader extends BaseLoader {
 			System.out.println(rpt_date+": "+net_value);
 			NetValue onerow = new NetValue(code, rpt_date, net_value);
 			netValues.add(onerow);
-			//HtmlElement next=page.getFirstByXPath("//li[@title='下一页']");
-			//next.click();
 			//webClient.waitForBackgroundJavaScript(2000);
 		}
 

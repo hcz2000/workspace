@@ -1,28 +1,44 @@
 package com.jams.finance;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.htmlunit.BrowserVersion;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.htmlunit.options.HtmlUnitDriverOptions;
+import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
 public class PawmLoader0 extends BaseLoader{
-	private FirefoxDriver driver;
+	private WebDriver driver;
 	
 	public PawmLoader0() {
         super();
-        //System.setProperty("webdriver.gecko.driver", "../../pywork/Tagui/geckodriver.exe");
+        
 		FirefoxOptions opts=new FirefoxOptions();
 		opts.setCapability("pageLoadStrategy", "none");
 		driver=new FirefoxDriver(opts);
+		
+        /*
+		HtmlUnitDriverOptions opts = new HtmlUnitDriverOptions(BrowserVersion.FIREFOX);;
+		opts.setCapability(HtmlUnitOption.optJavaScriptEnabled,true);
+		opts.setCapability(HtmlUnitOption.optPrintContentOnFailingStatusCode,true);
+		opts.setCapability(HtmlUnitOption.optThrowExceptionOnScriptError, false);
+		opts.setCapability(HtmlUnitOption.optCssEnabled,false);
+		driver=new HtmlUnitDriver(opts);
+		*/
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
 	}
@@ -33,7 +49,7 @@ public class PawmLoader0 extends BaseLoader{
 		double last_net_value = lastRecord.getValue();
 		System.out.println("##" + last_sync_date + "  " + last_net_value);
 		driver.get(url);
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@role='tab']")));
         
 		List<WebElement> menuList=driver.findElements(By.xpath("//div[@role='tab']"));

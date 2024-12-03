@@ -22,10 +22,10 @@ import org.htmlunit.html.HtmlSpan;
 import org.htmlunit.html.HtmlTextInput;
 import org.htmlunit.javascript.SilentJavaScriptErrorListener;
 
-public class PawmLoader extends BaseLoader {
+public class PawmLoader1 extends BaseLoader {
 	private WebClient webClient;
 
-	public PawmLoader() {
+	public PawmLoader1() {
 		super();
 		//webClient = new WebClient(BrowserVersion.FIREFOX);
 		webClient = new WebClient(BrowserVersion.CHROME);
@@ -42,7 +42,11 @@ public class PawmLoader extends BaseLoader {
 		    if (StringUtils.contains(sourceName, "index.js")) {
 		        sourceCode = sourceCode.replace("Intl.Collator.supportedLocalesOf([\"zh-CN\"]).length", "1");
 		    }
-		    
+		    //if (StringUtils.contains(sourceName, "tools.js")) {
+		    {
+		    	sourceCode = sourceCode.replace("async ", StringUtils.EMPTY);
+		    	sourceCode = sourceCode.replace("await ", StringUtils.EMPTY);
+		    }
 		    return sourceCode;
 		});
 		Logger.getLogger("org.htmlunit").setLevel(Level.SEVERE);
@@ -169,7 +173,7 @@ public class PawmLoader extends BaseLoader {
 	}
 
 	public static void main(String[] args) {
-		try (PawmLoader boc = new PawmLoader()) {
+		try (PawmLoader1 boc = new PawmLoader1()) {
 			boc.refreshCatalog();
 		} catch (Exception e) {
 			e.printStackTrace();

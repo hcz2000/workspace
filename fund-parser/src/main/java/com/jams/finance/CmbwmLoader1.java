@@ -13,10 +13,10 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlPage;
 
 
-public class CmbwmLoader extends BaseLoader {
+public class CmbwmLoader1 extends BaseLoader {
 	private WebClient webClient;
 
-	public CmbwmLoader() {
+	public CmbwmLoader1() {
 		super();
 		//webClient = new WebClient(BrowserVersion.FIREFOX);
 		webClient = new WebClient();
@@ -92,7 +92,7 @@ public class CmbwmLoader extends BaseLoader {
 	}
 
 	public static void main(String[] args) {
-		try (CmbwmLoader boc = new CmbwmLoader()) {
+		try (CmbwmLoader1 boc = new CmbwmLoader1()) {
 			boc.refreshCatalog();
 		} catch (Exception e) {
 			e.printStackTrace();

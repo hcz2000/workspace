@@ -21,10 +21,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
-public class PawmLoader0 extends BaseLoader{
+public class PawmLoader extends BaseLoader{
 	private WebDriver driver;
 	
-	public PawmLoader0() {
+	public PawmLoader() {
         super();
         
 		FirefoxOptions opts=new FirefoxOptions();
@@ -134,7 +134,7 @@ public class PawmLoader0 extends BaseLoader{
 	}
 
 	public static void main(String[] args) {
-		try(PawmLoader0 boc=new PawmLoader0()){
+		try(PawmLoader boc=new PawmLoader()){
 			boc.refreshCatalog();
 		}catch (Exception e) {
 			e.printStackTrace();

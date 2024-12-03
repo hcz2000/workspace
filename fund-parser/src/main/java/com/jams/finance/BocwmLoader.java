@@ -5,22 +5,31 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.htmlunit.BrowserVersion;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import org.openqa.selenium.htmlunit.options.HtmlUnitDriverOptions;
+import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class BocwmLoader extends BaseLoader{
-	private FirefoxDriver driver;
+	private WebDriver driver;
 	
 	public BocwmLoader() {
         super();
-		FirefoxOptions opts=new FirefoxOptions();
-		opts.setCapability("pageLoadStrategy", "none");
-		driver=new FirefoxDriver(opts);
+        HtmlUnitDriverOptions opts = new HtmlUnitDriverOptions(BrowserVersion.FIREFOX);;
+		opts.setCapability(HtmlUnitOption.optJavaScriptEnabled,true);
+		opts.setCapability(HtmlUnitOption.optPrintContentOnFailingStatusCode,true);
+		opts.setCapability(HtmlUnitOption.optThrowExceptionOnScriptError, false);
+		opts.setCapability(HtmlUnitOption.optCssEnabled,false);
+		driver=new HtmlUnitDriver(opts);
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
 	}

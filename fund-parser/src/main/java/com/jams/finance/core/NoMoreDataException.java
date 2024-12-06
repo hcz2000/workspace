@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.core;
 
 public class NoMoreDataException extends DataException {
 

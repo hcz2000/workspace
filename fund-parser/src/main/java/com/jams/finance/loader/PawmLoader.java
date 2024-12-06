@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.loader;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -18,6 +18,9 @@ import org.openqa.selenium.htmlunit.options.HtmlUnitDriverOptions;
 import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.jams.finance.NetValue;
+import com.jams.finance.core.NoMoreDataException;
 
 
 

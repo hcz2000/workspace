@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.loader;
 
 import java.net.MalformedURLException;
 import java.net.URL;

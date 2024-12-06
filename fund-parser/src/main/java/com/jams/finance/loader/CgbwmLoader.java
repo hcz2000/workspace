@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.loader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +14,10 @@ import org.htmlunit.html.HtmlElement;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSpan;
 import org.htmlunit.html.HtmlTextInput;
+
+import com.jams.finance.NetValue;
+import com.jams.finance.core.DataException;
+
 import org.htmlunit.html.HtmlButton;
 
 public class CgbwmLoader extends BaseLoader {

@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.core;
 
 public class DataException extends RuntimeException {
 	public DataException(String msg) {

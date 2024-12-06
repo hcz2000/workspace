@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.loader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +13,9 @@ import org.htmlunit.html.HtmlDivision;
 import org.htmlunit.html.HtmlTable;
 import org.htmlunit.html.HtmlTableBody;
 import org.htmlunit.html.HtmlTableRow;
+
+import com.jams.finance.NetValue;
+import com.jams.finance.Revenue;
 
 
 public class BocwmLoader1 extends BaseLoader{

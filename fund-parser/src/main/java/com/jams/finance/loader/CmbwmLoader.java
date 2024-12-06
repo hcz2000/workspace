@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.loader;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -15,6 +15,9 @@ import org.openqa.selenium.htmlunit.options.HtmlUnitDriverOptions;
 import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.jams.finance.NetValue;
+
 import org.htmlunit.BrowserVersion;
 import org.htmlunit.html.HtmlElement;
 

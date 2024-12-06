@@ -41,7 +41,7 @@ public class BocwmLoader extends BaseLoader{
 		NetValue lastRecord=getLastRecord(code);
         String last_sync_date = lastRecord.getDate();
         double last_net_value = lastRecord.getValue();
-        //System.out.println("  "+last_sync_date+":"+last_net_value);
+        System.out.println("  "+last_sync_date+":"+last_net_value);
 		driver.get(url);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//table[@class='layui-table']/tbody/tr[1]/td[1]"),code));

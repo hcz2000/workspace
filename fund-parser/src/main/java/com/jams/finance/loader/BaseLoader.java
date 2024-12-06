@@ -10,20 +10,19 @@ import java.util.Map;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.yaml.snakeyaml.Yaml;
 
-import com.jams.finance.NetValue;
-import com.jams.finance.ProductConfig;
+import com.jams.finance.App;
 import com.jams.finance.core.DataException;
 import com.jams.finance.core.DatabaseConfig;
 import com.jams.finance.core.DbEngine;
+import com.jams.finance.data.NetValue;
+import com.jams.finance.data.ProductConfig;
 
 public abstract class BaseLoader implements AutoCloseable{
 	protected Map<String,ProductConfig> config=new HashMap<String,ProductConfig>();
-	private AnnotationConfigApplicationContext ctx;
 	private DbEngine engine;
 	
 	public BaseLoader() {
-		ctx=new AnnotationConfigApplicationContext(DatabaseConfig.class);
-		engine=(DbEngine) ctx.getBean("dbEngine");
+		engine=(DbEngine) App.getBean("dbEngine");
 		
         Yaml yaml = new Yaml();
         try {
@@ -96,7 +95,7 @@ public abstract class BaseLoader implements AutoCloseable{
 	
 	@Override
     public void close() throws Exception {
-        ctx.close();
+        //ctx.close();
     }
 	abstract public List<NetValue> fetchUpdate(String code,String url,String value_type) throws Exception;
 	abstract public String getVendor();

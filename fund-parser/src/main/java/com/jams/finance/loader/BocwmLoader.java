@@ -18,8 +18,8 @@ import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.jams.finance.NetValue;
-import com.jams.finance.Revenue;
+import com.jams.finance.data.NetValue;
+import com.jams.finance.data.Revenue;
 
 
 public class BocwmLoader extends BaseLoader{

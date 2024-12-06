@@ -1,4 +1,4 @@
-package com.jams.finance;
+package com.jams.finance.data;
 
 public class ProductConfig {
 	private String vendor;

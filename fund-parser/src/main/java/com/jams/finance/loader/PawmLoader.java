@@ -19,8 +19,8 @@ import org.openqa.selenium.htmlunit.options.HtmlUnitOption;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.jams.finance.NetValue;
 import com.jams.finance.core.NoMoreDataException;
+import com.jams.finance.data.NetValue;
 
 
 

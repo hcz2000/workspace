@@ -15,8 +15,8 @@ import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSpan;
 import org.htmlunit.html.HtmlTextInput;
 
-import com.jams.finance.NetValue;
 import com.jams.finance.core.DataException;
+import com.jams.finance.data.NetValue;
 
 import org.htmlunit.html.HtmlButton;
 

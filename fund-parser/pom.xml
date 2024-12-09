@@ -79,11 +79,8 @@
                     </compilerArguments>
                 </configuration>
             </plugin>
-
             <plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
             	<artifactId>maven-jar-plugin</artifactId>
-            	<version>3.2.0</version>
             	<configuration>
                 	<archive>
                     	<manifest>
@@ -92,6 +89,26 @@
                     	</manifest>
                 	</archive>
             	</configuration>
+        	</plugin>
+			<plugin>
+            	<artifactId>maven-assembly-plugin</artifactId>
+            	<configuration>
+                	<archive>
+                    	<manifest>
+                        	<mainClass>com.jams.finance.App</mainClass>
+                    	</manifest>
+                	</archive>
+                	<descriptorRefs>jar-with-dependencies</descriptorRefs>
+            	</configuration>
+            	<executions>
+                	<execution>
+                    	<id>make-assembly</id> <!-- 这个名字可以随意 -->
+                    	<phase>package</phase> <!-- 绑定到打包生命周期阶段 -->
+                    	<goals>
+                        	<goal>single</goal> <!-- 执行单一构建 -->
+                    	</goals>
+                	</execution>
+            	</executions>
         	</plugin>
         </plugins>
    </build>

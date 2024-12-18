@@ -142,6 +142,7 @@ public class PawmLoader extends BaseLoader{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("----平安理财 jobs done!----");
 	}
 
 }

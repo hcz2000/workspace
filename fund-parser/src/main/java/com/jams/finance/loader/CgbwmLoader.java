@@ -161,6 +161,8 @@ public class CgbwmLoader extends BaseLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("----广发理财 jobs done!----");
 	}
 
 }

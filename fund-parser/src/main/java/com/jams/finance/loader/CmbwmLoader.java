@@ -106,6 +106,8 @@ public class CmbwmLoader extends BaseLoader{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("----招银理财 jobs done!----");
 	}
 
 }

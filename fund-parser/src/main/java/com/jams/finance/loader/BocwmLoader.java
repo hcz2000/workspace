@@ -96,7 +96,7 @@ public class BocwmLoader extends BaseLoader{
 
 	@Override
 	public String getVendor() {
-		return "bocwm";//中银
+		return "bocwm";
 	}
 
 	public static void main(String[] args) {
@@ -105,7 +105,7 @@ public class BocwmLoader extends BaseLoader{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("----中银理财 jobs done!----");
+		System.out.println("----中银理财 done!----");
 	}
 
 }

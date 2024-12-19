@@ -96,6 +96,7 @@ public class BocwmLoader1 extends BaseLoader{
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("----中银理财 done!----");
 	}
 
 }

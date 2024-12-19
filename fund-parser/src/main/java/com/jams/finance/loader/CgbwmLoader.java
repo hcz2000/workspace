@@ -162,7 +162,7 @@ public class CgbwmLoader extends BaseLoader {
 			e.printStackTrace();
 		}
 		
-		System.out.println("----广发理财 jobs done!----");
+		System.out.println("----广发理财 done!----");
 	}
 
 }

@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
- 
+
+import com.jams.finance.Config;
+
 import javax.sql.DataSource;
  
 @Configuration
@@ -13,10 +15,10 @@ public class DatabaseConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:../../pywork/Tagui/data/wm.db");
-        //dataSource.setUsername("your_username");
-        //dataSource.setPassword("your_password");
+        dataSource.setDriverClassName(Config.dbDriver);
+        dataSource.setUrl(Config.dbUrl);
+        dataSource.setUsername(Config.dbUser);
+        dataSource.setPassword(Config.dbPass);
         return dataSource;
     }
  

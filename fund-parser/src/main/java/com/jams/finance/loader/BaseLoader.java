@@ -11,6 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.yaml.snakeyaml.Yaml;
 
 import com.jams.finance.App;
+import com.jams.finance.Config;
 import com.jams.finance.core.DataException;
 import com.jams.finance.core.DatabaseConfig;
 import com.jams.finance.core.DbEngine;
@@ -26,7 +27,7 @@ public abstract class BaseLoader implements AutoCloseable{
 		
         Yaml yaml = new Yaml();
         try {
-        	FileInputStream inputStream = new FileInputStream("../../pywork/Tagui/wm.yaml");
+        	FileInputStream inputStream = new FileInputStream(Config.wmFile);
             Map<String, Map<String,Object>> yamlMap = yaml.load(inputStream);
             String myVendor=getVendor();
             yamlMap.forEach((key,value)->{

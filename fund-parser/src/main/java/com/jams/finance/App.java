@@ -17,6 +17,9 @@ public class App {
 	}
 	
     public static void main(String[] args) {
+    	Task task=new Task();
+    	task.process();
+    	
         Object monitor = new Object();
         synchronized (monitor) {
             try {

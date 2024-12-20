@@ -13,7 +13,7 @@ import com.jams.finance.loader.PawmLoader;
 @Component
 public class Task {
 	@Scheduled(cron="0 20 8,13 * * ?")
-    private void process(){
+    public void process(){
 		try(BocwmLoader boc=new BocwmLoader()){
 			boc.refreshCatalog();
 		}catch (Exception e) {

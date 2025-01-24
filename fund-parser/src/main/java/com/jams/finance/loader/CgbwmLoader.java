@@ -115,8 +115,11 @@ public class CgbwmLoader extends BaseLoader {
 		
 		for (int cnt=0;cnt<outputList.size();cnt++) {
 			HtmlDivision row=outputList.get(cnt);
-			String title = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[1]")).getVisibleText();
-			String catalog = ((HtmlSpan) row.getFirstByXPath("./div[@class='myTitleTwo']/span[2]")).getVisibleText();
+			List<HtmlSpan> spanList=row.getByXPath("./div[@class='myTitleTwo']/span");
+			if(spanList.size()<2)
+				continue;
+			String title = spanList.get(0).getVisibleText();
+			String catalog = spanList.get(1).getVisibleText();
 			//System.out.println(title);
 			if (!catalog.startsWith("净值公告"))
 				continue;
